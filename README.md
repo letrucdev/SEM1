@@ -18,3 +18,4 @@
   - PHP
   - Laravel 10
   - MySQL
+  - Jsonplaceholder
