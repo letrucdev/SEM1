@@ -21,4 +21,3 @@
   - PHP
   - Laravel 10
   - MySQL
-    ok
