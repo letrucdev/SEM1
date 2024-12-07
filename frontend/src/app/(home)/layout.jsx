@@ -226,7 +226,7 @@ export default function HomeLayout({ children }) {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow p-6">{children}</main>
+      <main className="flex-grow p-6 bg-white">{children}</main>
 
       <footer className="bg-blue-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">

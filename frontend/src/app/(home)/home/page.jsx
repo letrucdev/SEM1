@@ -8,7 +8,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <div className="relative flex flex-col items-center justify-center bg-white shadow-lg rounded-md overflow-hidden">
           <Image
-            src="/images/Banner_home.png" // Replace with your actual image path
+            src={`/Banner_home/${""}.png`} // Replace with your actual image path
             alt="Banner Home"
             width={1200}
             height={600}
@@ -32,12 +32,12 @@ export default function HomePage() {
 
           {/* Right Section */}
           <div className="md:w-1/2 bg-white shadow-md rounded-lg p-6">
-            <div className="mb-4">
+            <div className="mb-4 ">
               <h2 className="text-xl font-bold text-black">
                 Belleville Dental Care
               </h2>
               <p className="text-yellow-500">5.0 ⭐⭐⭐⭐⭐ Google reviews</p>
-              <p className="text-gray-600">
+              <p className="text-gray-600 md:w-2/3">
                 135 Victoria Ave, Belleville, ON K8N 2B1 CA
               </p>
             </div>
@@ -45,12 +45,13 @@ export default function HomePage() {
               href="https://www.google.com/maps"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline font-medium block mb-4"
+              className="text-blue-500 hover:underline font-medium block mb-4 "
             >
               Get Directions →
             </a>
+
             <Image
-              src="/images/DentalFeedback.png" // Replace with your actual image path
+              src="/public/DentalFeedback.png" // Replace with your actual image path
               alt="Dental Office"
               width={400}
               height={300}
@@ -131,9 +132,34 @@ export default function HomePage() {
 
           {/* All Services Button */}
           <div className="text-center mt-8">
-            <button className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600">
+            <button className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600">
               All Services
             </button>
+          </div>
+        </div>
+        {/* About US */}
+        <div className="flex flex-col md:flex-row items-center justify-between px-7 py-12 max-w-7xl mx-auto">
+          {/* Left Section */}
+          <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
+            <h1 className="text-5xl font-bold mb-4 text-black">About Us</h1>
+            <p className="text-gray-600 md:w-3/4 text-2xl">
+              At Dentist, we’re more than just a dental practice—we’re a
+              compassionate team committed to helping you achieve lifelong oral
+              health and a smile you’re proud of. With a focus on personalized,
+              patient-centered care, we strive to make each visit a comfortable
+              and positive experience
+            </p>
+          </div>
+
+          {/* Right Section */}
+          <div className="md:w-1/2 bg-white shadow-md rounded-lg p-6">
+            <Image
+              src="/public/DentalFeedback.png" // Replace with your actual image path
+              alt="Dental Office"
+              width={400}
+              height={300}
+              className="rounded-md"
+            />
           </div>
         </div>
       </div>
