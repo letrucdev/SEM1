@@ -12,6 +12,8 @@ class Product extends Model
 
     protected $fillable = ['name', 'stock', 'price', 'category'];
 
+    protected $with = ['productImages'];
+
     public function productImages(): HasMany
     {
         return $this->hasMany(ProductImage::class);

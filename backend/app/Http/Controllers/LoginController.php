@@ -27,10 +27,19 @@ class LoginController extends Controller
         //Revoke old tokens before creating a new one
         $user->tokens()->delete();
 
+        $tokenAbilities = [];
+        if ($user->role === 'admin') {
+            $tokenAbilities = ['*'];
+        } elseif ($user->role === 'user') {
+            $tokenAbilities = ['get-product'];
+        } elseif ($user->role === 'doctor') {
+            $tokenAbilities = ['get-product', 'get-doctor-profile'];
+        }
+
         return [
             'message' => 'Login successful!',
             'data' => $user,
-            'access_token' => $user->createToken('user_token', ['*'], now()->addHour(3))->plainTextToken,
+            'access_token' => $user->createToken('user_token', $tokenAbilities, now()->addHour(3))->plainTextToken,
         ];
     }
 }
