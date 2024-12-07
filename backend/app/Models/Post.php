@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['title', 'content', 'user_id', 'description', 'post_type'];
+    protected $fillable = ['title', 'content', 'user_id', 'description', 'post_type', 'thumbnail_path'];
 
     public function user(): BelongsTo
     {
