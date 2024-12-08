@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,26 +15,49 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('products')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->middleware('ability:get-product');
+    Route::prefix('products')->controller(ProductController::class)->group(function () {
+        Route::get('/categories', 'getProductCategories');
 
-        Route::get('/{product}', [ProductController::class, 'show']);
+        Route::middleware('ability:manage-product')->prefix('category')->missing(function () {
+            return response()->json([
+                'message' => 'Product category not found',
+            ], Response::HTTP_NOT_FOUND);
+        })->group(function () {
+            Route::post('/', 'storeProductCategory');
 
-        Route::post('/', [ProductController::class, 'store'])->middleware('ability:create-product');
+            Route::put('/{productCategory}', 'updateProductCategory');
 
-        Route::put('/{product}', [ProductController::class, 'update']);
+            Route::delete('/{productCategory}', 'destroyProductCategory');
+        });
 
-        Route::delete('/{product}', [ProductController::class, 'destroy']);
+        Route::missing(function () {
+            response()->json([
+                'message' => 'Product not found',
+            ], Response::HTTP_NOT_FOUND);
+        })->group(function () {
 
-        Route::delete('/images/{image}', [ProductController::class, 'destroyImage']);
+            Route::get('/', 'index');
 
-        Route::post('/{product}/images', [ProductController::class, 'uploadImage']);
+            Route::get('/{product}', 'show');
+
+            Route::post('/{product}/rate', 'rateProduct');
+
+            Route::middleware('ability:manage-product')->group(function () {
+                Route::post('/', 'store');
+
+                Route::post('/{product}', 'update');
+
+                Route::delete('/{product}', 'destroy');
+
+                Route::delete('/{product}/{imageId}', 'destroyProductImage');
+            });
+        });
     });
 });
 

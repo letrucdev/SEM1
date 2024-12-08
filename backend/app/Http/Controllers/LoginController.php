@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -28,12 +29,16 @@ class LoginController extends Controller
         $user->tokens()->delete();
 
         $tokenAbilities = [];
-        if ($user->role === 'admin') {
-            $tokenAbilities = ['*'];
-        } elseif ($user->role === 'user') {
-            $tokenAbilities = ['get-product'];
-        } elseif ($user->role === 'doctor') {
-            $tokenAbilities = ['get-product', 'get-doctor-profile'];
+        switch ($user->role) {
+            case UserRole::User:
+                $tokenAbilities = [''];
+                break;
+            case UserRole::Doctor:
+                $tokenAbilities = ['manage-post'];
+                break;
+            case UserRole::Admin:
+                $tokenAbilities = ['*'];
+                break;
         }
 
         return [

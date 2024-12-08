@@ -12,10 +12,11 @@ return new class extends Migration {
     {
         Schema::create('product_rates', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('product_id')->constrained('posts')->onDelete('cascade');
+            $table->foreignUuid('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
+            $table->unique(['product_id', 'user_id']);
             $table->integer('star');
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
         });
     }
 

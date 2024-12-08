@@ -21,10 +21,8 @@ class RegisterController extends Controller
         ]);
 
         User::create([
-            'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'role' => 'user', // Set default role to 'user' for new users
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'birthdate' => $request->birthdate,

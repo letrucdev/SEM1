@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->string('first_name');
             $table->string('last_name');
             $table->string('password');
-            $table->string('role');
-            $table->string('avatar')->nullable();
+            $table->tinyInteger('role')->default(\App\Enums\UserRole::User); // 0: User, 1: Doctor, 2: Admin;
+            $table->string('avatar_path')->nullable();
             $table->string('education')->nullable();
             $table->date('birthdate');
             $table->timestamps();
