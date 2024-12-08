@@ -70,4 +70,38 @@ class PostController extends Controller
 
         return response()->json(['message' => 'Post deleted successfully'], 200);
     }
+
+    // Upload Thumbnail
+    public function uploadThumbnail(Request $request)
+    {
+        $request->validate([
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Chỉ cho phép file ảnh
+        ]);
+
+        // Lưu file vào thư mục 'thumbnails' trong storage
+        $filePath = $request->file('thumbnail')->store('thumbnails', 'public');
+
+        // Trả về đường dẫn file đã upload
+        return response()->json([
+            'message' => 'Thumbnail uploaded successfully',
+            'thumbnail_url' => asset('storage/' . $filePath),
+        ], 200);
+    }
+
+    // Upload Video
+    public function uploadVideo(Request $request)
+    {
+        $request->validate([
+            'video' => 'required|file|mimes:mp4,avi,mkv|max:20480', // Chỉ cho phép file video
+        ]);
+
+        // Lưu file vào thư mục 'videos' trong storage
+        $filePath = $request->file('video')->store('videos', 'public');
+
+        // Trả về đường dẫn file đã upload
+        return response()->json([
+            'message' => 'Video uploaded successfully',
+            'video_url' => asset('storage/' . $filePath),
+        ], 200);
+    }
 }

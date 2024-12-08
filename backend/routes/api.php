@@ -28,6 +28,8 @@ Route::post('/register', \App\Http\Controllers\RegisterController::class);
 Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'store']);
 Route::middleware('auth:sanctum')->put('/posts/{id}', [PostController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/posts/{id}', [PostController::class, 'destroy']);
+Route::post('/upload-thumbnail', [PostController::class, 'uploadThumbnail']);
+Route::post('/upload-video', [PostController::class, 'uploadVideo']);
 
 
 
