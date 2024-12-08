@@ -1,14 +1,13 @@
 "use client";
 import Image from "next/image";
-
 export default function HomePage() {
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-gray-50">
+      <div className="flex flex-col min-h-screen bg-white">
         {/* Hero Section */}
         <div className="relative flex flex-col items-center justify-center bg-white shadow-lg rounded-md overflow-hidden">
           <Image
-            src={`/Banner_home/${""}.png`} // Replace with your actual image path
+            src="/Banner_home.png" // Replace with your actual image path
             alt="Banner Home"
             width={1200}
             height={600}
@@ -51,9 +50,9 @@ export default function HomePage() {
             </a>
 
             <Image
-              src="/public/DentalFeedback.png" // Replace with your actual image path
+              src="/DentalFeedback.png" // Replace with your actual image path
               alt="Dental Office"
-              width={400}
+              width={600}
               height={300}
               className="rounded-md"
             />
@@ -61,7 +60,7 @@ export default function HomePage() {
         </div>
 
         {/* Services Section */}
-        <div className="bg-gray-100 py-12">
+        <div className="bg-white py-12">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800">Our Services</h1>
             <p className="text-gray-600 max-w-2xl mx-auto">
@@ -74,7 +73,7 @@ export default function HomePage() {
             {/* Image Section */}
             <div className="w-full md:w-1/2">
               <Image
-                src="/images/dental-patient.jpg" // Replace with your actual image path
+                src="/service.png" // Replace with your actual image path
                 alt="Dental Patient"
                 width={600}
                 height={400}
@@ -132,7 +131,7 @@ export default function HomePage() {
 
           {/* All Services Button */}
           <div className="text-center mt-8">
-            <button className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600">
+            <button className="px-8 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600">
               All Services
             </button>
           </div>
@@ -152,14 +151,111 @@ export default function HomePage() {
           </div>
 
           {/* Right Section */}
-          <div className="md:w-1/2 bg-white shadow-md rounded-lg p-6">
-            <Image
-              src="/public/DentalFeedback.png" // Replace with your actual image path
-              alt="Dental Office"
-              width={400}
-              height={300}
-              className="rounded-md"
-            />
+          <div className="flex flex-col md:flex-row items-center justify-center py-12 px-6">
+            <div className="w-full">
+              <Image
+                src="/about.png" // Replace with your actual image path
+                alt="Dental Patient"
+                width={600}
+                height={400}
+                className="rounded-lg shadow-md"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white py-12">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-800">Our Dentist</h1>
+            <button className="px-10 py-2 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600">
+              Meet More
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                name: "Dr. Essence Page",
+                qualification: "DDS, California - Loma University",
+              },
+              {
+                name: "Dr. Essence Page",
+                qualification: "DDS, California - Loma University",
+              },
+              {
+                name: "Dr. Essence Page",
+                qualification: "DDS, California - Loma University",
+              },
+            ].map((dentist, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center bg-white shadow-md rounded-lg p-6"
+              >
+                <Image
+                  src="/doctor.png" // Replace with your actual image path
+                  alt="About Dental"
+                  width={600}
+                  height={400}
+                />
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {dentist.name}
+                </h3>
+                <p className="text-gray-600 text-sm">{dentist.qualification}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Latest Documents & Research Section */}
+          <div className="w-full max-w-6xl mx-auto mt-16 ">
+            <h2 className="text-2xl font-bold text-gray-800 mb-8">
+              Read Latest Document & Research
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "What is Population Health Management?",
+                  description:
+                    "It’s easy to think about medical care from an episodic perspective. You go to the hospital...",
+                  image: "/images/research-placeholder1.jpg", // Replace with the actual image path
+                },
+                {
+                  title: "What is Population Health Management?",
+                  description:
+                    "It’s easy to think about medical care from an episodic perspective. You go to the hospital...",
+                  image: "/images/research-placeholder2.jpg", // Replace with the actual image path
+                },
+              ].map((doc, index) => (
+                <div
+                  key={index}
+                  className="flex bg-white shadow-md rounded-lg overflow-hidden"
+                >
+                  <Image
+                    src="/detail.png"
+                    alt={doc.title}
+                    width={200}
+                    height={100}
+                    className="w-1/3 object-cover"
+                  />
+                  <div className="p-4 flex flex-col justify-between">
+                    <h3 className="text-lg font-bold text-gray-800 mb-2">
+                      {doc.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      {doc.description}
+                    </p>
+                    <a
+                      href="#"
+                      className="text-blue-500 hover:underline font-medium"
+                    >
+                      Learn More
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="text-right mt-4">
+              <a href="#" className="text-blue-500 hover:underline font-medium">
+                Read more
+              </a>
+            </div>
           </div>
         </div>
       </div>
