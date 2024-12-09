@@ -112,4 +112,9 @@ return [
 
     'password_timeout' => 10800,
 
+    'role_abilities' => [
+        \App\Enums\UserRole::User->name => ['rate-product'],
+        \App\Enums\UserRole::Admin->name => ['*'],
+        \App\Enums\UserRole::Doctor->name => ['manage-product'],
+    ]
 ];

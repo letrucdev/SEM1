@@ -28,18 +28,7 @@ class LoginController extends Controller
         //Revoke old tokens before creating a new one
         $user->tokens()->delete();
 
-        $tokenAbilities = [];
-        switch ($user->role) {
-            case UserRole::User:
-                $tokenAbilities = [''];
-                break;
-            case UserRole::Doctor:
-                $tokenAbilities = ['manage-post'];
-                break;
-            case UserRole::Admin:
-                $tokenAbilities = ['*'];
-                break;
-        }
+        $tokenAbilities = config('auth.role_abilities')[$user->role] ?? [''];
 
         return [
             'message' => 'Login successful!',

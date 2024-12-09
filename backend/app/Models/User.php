@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\UserRoleCast;
 use App\Enums\UserRole;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -51,7 +52,7 @@ class User extends Authenticatable
     protected $casts = [
         'birthdate' => 'date',
         'password' => 'hashed',
-        'role' => UserRole::class
+        'role' => UserRoleCast::class
     ];
 
 

@@ -16,8 +16,6 @@ class Product extends Model
 
     protected $hidden = ['product_category_id'];
 
-    protected $with = ['productCategory', 'productImages'];
-
     protected $casts = [
         'product_rates_avg_star' => 'decimal:1'
     ];

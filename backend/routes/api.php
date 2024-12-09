@@ -1,7 +1,12 @@
 <?php
 
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\ProductCategory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
 use Symfony\Component\HttpFoundation\Response;
 
 /*
@@ -19,51 +24,29 @@ use Symfony\Component\HttpFoundation\Response;
     return $request->user();
 });*/
 
+require __DIR__ . '/auth_routes.php';
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::prefix('products')->controller(ProductController::class)->group(function () {
-        Route::get('/categories', 'getProductCategories');
+Route::middleware('auth:sanctum')->missing(function (Request $request, Throwable $e) {
+    if (!$e instanceof ModelNotFoundException) throw $e;
 
-        Route::middleware('ability:manage-product')->prefix('category')->missing(function () {
-            return response()->json([
-                'message' => 'Product category not found',
-            ], Response::HTTP_NOT_FOUND);
-        })->group(function () {
-            Route::post('/', 'storeProductCategory');
-
-            Route::put('/{productCategory}', 'updateProductCategory');
-
-            Route::delete('/{productCategory}', 'destroyProductCategory');
-        });
-
-        Route::missing(function () {
-            response()->json([
-                'message' => 'Product not found',
-            ], Response::HTTP_NOT_FOUND);
-        })->group(function () {
-
-            Route::get('/', 'index');
-
-            Route::get('/{product}', 'show');
-
-            Route::post('/{product}/rate', 'rateProduct');
-
-            Route::middleware('ability:manage-product')->group(function () {
-                Route::post('/', 'store');
-
-                Route::post('/{product}', 'update');
-
-                Route::delete('/{product}', 'destroy');
-
-                Route::delete('/{product}/{imageId}', 'destroyProductImage');
-            });
-        });
-    });
+    $modelName = $e->getModel();
+    return match ($modelName) {
+        Cart::class => response()->json(['message' => 'Cart not found.'], Response::HTTP_NOT_FOUND),
+        Product::class => response()->json(['message' => 'Product not found.'], Response::HTTP_NOT_FOUND),
+        ProductCategory::class => response()->json(['message' => 'Product category not found.'], Response::HTTP_NOT_FOUND),
+        Order::class => response()->json(['message' => 'Order not found.'], Response::HTTP_NOT_FOUND),
+        default => response()->json(['message' => $modelName . ' not found.'], Response::HTTP_NOT_FOUND)
+    };
+})->group(function () {
+    require __DIR__ . '/product_routes.php';
+    require __DIR__ . '/cart_routes.php';
+    require __DIR__ . '/order_routes.php';
 });
 
 
-Route::post('/login', \App\Http\Controllers\LoginController::class);
-Route::post('/register', \App\Http\Controllers\RegisterController::class);
+
+
+
 
 
 

@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
-            $table->tinyInteger('order_status')->default(0); //0: Processing, 1: Shipped, 2: Delivered, 3: Cancelled
+            $table->tinyInteger('order_status')->default(0); //0: Processing, 1: Delivering, 2: Delivered, 3: Cancelled
             $table->string('delivery_address');
             $table->timestamps();
         });

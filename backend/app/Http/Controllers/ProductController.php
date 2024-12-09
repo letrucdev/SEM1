@@ -9,6 +9,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
@@ -22,17 +23,25 @@ class ProductController extends Controller
             'inStock' => 'nullable|boolean',
             'fromPrice' => 'nullable|numeric|min:0',
             'toPrice' => 'nullable|numeric|min:0',
+            'sortBy' => ['nullable', 'string',
+                Rule::in(
+                    [
+                        'price-asc', 'price-desc',
+                        'created_at-asc', 'created_at-desc',
+                        'product_rates_avg_star-desc', 'product_rates_avg_star-asc'
+                    ])
+            ],
         ]);
 
+        $page = $request->query('page', 0);
+        $pageSize = $request->query('pageSize', 10);
+        $category = $request->query('category');
+        $inStock = $request->boolean('inStock');
+        $fromPrice = $request->query('fromPrice');
+        $toPrice = $request->query('toPrice');
+        $sortBy = $request->query('sortBy');
 
         try {
-            $page = $request->query('page', 0);
-            $pageSize = $request->query('pageSize', 10);
-            $category = $request->query('category');
-            $inStock = $request->boolean('inStock');
-            $fromPrice = $request->query('fromPrice');
-            $toPrice = $request->query('toPrice');
-
             $products = Product::offset($page * $pageSize)->limit($pageSize)
                 ->when($category, function (Builder $query, string $category) {
                     $query->whereHas('productCategory', function (Builder $query) use ($category) {
@@ -48,7 +57,12 @@ class ProductController extends Controller
                 ->when($toPrice, function (Builder $query, float $toPrice) {
                     $query->where('price', '<=', $toPrice);
                 })
+                ->when($sortBy, function (Builder $query, string $sortBy) {
+                    list($column, $direction) = explode('-', $sortBy);
+                    $query->orderBy($column, $direction);
+                })
                 ->withAvg('productRates', 'star')
+                ->with(['productImages', 'productCategory'])
                 ->get();
 
             return response()->json([
@@ -77,7 +91,7 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|integer|min:0',
             'stock' => 'required|integer|min:0',
-            'product_category_id' => 'required|uuid',
+            'product_category_id' => 'required|uuid|exists:product_categories,id',
             'images' => 'required|array|min:1',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:1024'
         ]);
@@ -117,7 +131,7 @@ class ProductController extends Controller
             'name' => 'nullable|string|max:255',
             'price' => 'nullable|numeric',
             'stock' => 'nullable|integer',
-            'product_category_id' => 'nullable|uuid',
+            'product_category_id' => 'nullable|uuid|exists:product_categories,id',
             'images' => 'nullable|array|min:1',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:1024'
         ]);
@@ -142,7 +156,7 @@ class ProductController extends Controller
 
                 return response()->json([
                     'message' => 'Product updated successfully',
-                    'data' => $product->loadAvg('productRates', 'star')->load(['productImages', 'productCategory']),
+                    'data' => $product->loadAvg('productRates', 'star')->load(['productImages', 'productCategory'])->refresh(),
                 ]);
             });
 

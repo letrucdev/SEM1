@@ -2,9 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Models\Cart;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,14 +29,17 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+        $this->renderable(function (Throwable $e, $request) {
             if ($request->is('api/*')) {
-                return response()->json([
-                    'message' => 'You don\'t have permission to do this.'
-                ], Response::HTTP_FORBIDDEN);
+                if ($e instanceof AccessDeniedHttpException) {
+                    return response()->json([
+                        'message' => 'You don\'t have permission to do this.'
+                    ], Response::HTTP_FORBIDDEN);
+                }
             }
             return null;
         });
+
 
         $this->reportable(function (Throwable $e) {
             //
