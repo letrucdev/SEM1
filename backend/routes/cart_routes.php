@@ -6,7 +6,7 @@ use App\Http\Controllers\CartController;
 Route::prefix('cart')->controller(CartController::class)->group(function () {
     Route::get('/', 'index');
 
-    Route::post('/', 'store');
+    Route::post('/{cart}', 'store');
 
     Route::put('/{cart}/{product}', 'updateCartProduct');
 

@@ -3,16 +3,14 @@
 namespace App\Models;
 
 use App\Casts\UserRoleCast;
-use App\Enums\UserRole;
+use App\Notifications\ResetPasswordNotification;
 use DateTimeInterface;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 
@@ -84,6 +82,16 @@ class User extends Authenticatable
     public function productRates(): HasMany
     {
         return $this->hasMany(ProductRate::class);
+    }
+
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param string $token
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
     public function createToken(string $name, array $abilities = ['*'], DateTimeInterface $expiresAt = null)

@@ -27,7 +27,7 @@ class CartController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Cart $cart)
     {
         $request->validate([
             'product_id' => 'required|uuid|exists:products,id',
@@ -35,8 +35,7 @@ class CartController extends Controller
         ]);
 
         try {
-            return DB::transaction(function () use ($request) {
-                $cart = Auth::user()->cart()->firstOrCreate();
+            return DB::transaction(function () use ($request, $cart) {
 
                 $cartProduct = $cart->cartProducts()->firstOrCreate(
                     ['product_id' => $request->product_id],
@@ -55,7 +54,7 @@ class CartController extends Controller
 
                 return response()->json([
                     'message' => 'Product added to the cart.',
-                    'data' => $cart->load('products'),
+                    'data' => $cart->refresh(),
                 ]);
             });
         } catch (\Exception) {

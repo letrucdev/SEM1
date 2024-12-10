@@ -31,8 +31,8 @@ class OrderController extends Controller
     {
         $request->validate([
             'delivery_address' => 'required|string|min:5',
-            'products' => 'required|array|min:1',
-            'products.*' => 'required|uuid|exists:products,id',
+            'products' => 'required|array|min:1|max:100',
+            'products.*' => 'required|uuid|exists:App\Models\CartProduct,product_id',
         ]);
 
         try {
@@ -42,29 +42,30 @@ class OrderController extends Controller
                 'delivery_address' => $request->delivery_address,
             ]);
 
-            foreach ($request->products as $productId) {
-                $cartProduct = $cart->cartProducts()->whereProductId($productId)->with('product')->firstOrFail();
-                $product = $cartProduct->product;
+            $cartProducts = $cart->cartProducts()->whereIn('product_id', $request->products)->with('product')->get();
 
-                if ($cartProduct->quantity > $product->stock) {
+            foreach ($cartProducts as $cartProduct) {
+                $detailProduct = $cartProduct->product;
+
+                if ($cartProduct->quantity > $detailProduct->stock) {
                     DB::rollBack();
-                    return response()->json(['error' => 'Not enough stock for product.', 'data' => $product], Response::HTTP_BAD_REQUEST);
+                    return response()->json(['error' => 'Not enough stock for product.', 'data' => $detailProduct], Response::HTTP_BAD_REQUEST);
                 }
 
                 $order->orderProducts()->create([
-                    'product_id' => $product->id,
+                    'product_id' => $detailProduct->id,
                     'quantity' => $cartProduct->quantity,
-                    'price' => $product->price,
+                    'price' => $detailProduct->price,
                 ]);
 
-                $product->decrement('stock', $cartProduct->quantity);
+                $detailProduct->decrement('stock', $cartProduct->quantity);
                 $cartProduct->delete();
             }
 
             DB::commit();
 
             return response()->json(['message' => 'Order created successfully', 'data' => $order]);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'An error occurred while creating the order'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
