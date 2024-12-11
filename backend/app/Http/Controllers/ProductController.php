@@ -23,6 +23,7 @@ class ProductController extends Controller
             'inStock' => 'nullable|boolean',
             'fromPrice' => 'nullable|numeric|min:0',
             'toPrice' => 'nullable|numeric|min:0',
+            'search' => 'nullable|string|max:255',
             'sortBy' => ['nullable', 'string',
                 Rule::in(
                     [
@@ -40,6 +41,7 @@ class ProductController extends Controller
         $fromPrice = $request->query('fromPrice');
         $toPrice = $request->query('toPrice');
         $sortBy = $request->query('sortBy');
+        $search = $request->query('search');
 
         try {
             $products = Product::offset($page * $pageSize)->limit($pageSize)
@@ -60,6 +62,9 @@ class ProductController extends Controller
                 ->when($sortBy, function (Builder $query, string $sortBy) {
                     list($column, $direction) = explode('-', $sortBy);
                     $query->orderBy($column, $direction);
+                })
+                ->when($search, function (Builder $query, string $search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
                 })
                 ->withAvg('productRates', 'star')
                 ->with(['productImages', 'productCategory'])

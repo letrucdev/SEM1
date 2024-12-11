@@ -31,6 +31,7 @@ class User extends Authenticatable
         'role',
         'email',
         'password',
+        'avatar_path'
     ];
 
     /**
@@ -64,10 +65,10 @@ class User extends Authenticatable
         return $this->hasMany(Course::class);
     }
 
-    public function supportTickets(): HasMany
-    {
-        return $this->hasMany(SupportTicket::class);
-    }
+    /*    public function supportTickets(): HasMany
+        {
+            return $this->hasMany(SupportTicket::class);
+        }*/
 
     public function orders(): HasMany
     {

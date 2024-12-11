@@ -31,6 +31,10 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        RateLimiter::for('ticket', function (Request $request) {
+            return Limit::perHour(5)->by($request->user()?->id ?: $request->ip());
+        });
+
         Route::bind('cart', function ($value) {
             return Cart::whereId($value)->whereUserId(\Auth::id())->firstOrFail();
         });

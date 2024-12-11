@@ -29,8 +29,8 @@ class CourseController extends Controller
             $courses = Course::offset($page * $pageSize)->limit($pageSize)
                 ->when($search, function (Builder $query, string $search) {
                     $query
-                        ->where('title', 'LIKE', "%{$search}%")
-                        ->orWhere('description', 'LIKE', "%{$search}%");
+                        ->where('title', 'LIKE', '%' . $search . '%')
+                        ->orWhere('description', 'LIKE', '%' . $search . '%');
                 })
                 ->get();
 
@@ -200,7 +200,7 @@ class CourseController extends Controller
             $videoFile = $request->file('video');
             $oldVideoPath = $courseLesson->video_path;
             $videoPath = $videoFile ?
-                $request->file('video')->store('videos/courses', 'public') :
+                $videoFile->store('videos/courses', 'public') :
                 $oldVideoPath;
 
             $courseLesson->update([

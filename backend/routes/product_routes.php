@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProductController;
-use Symfony\Component\HttpFoundation\Response;
 
 
 Route::prefix('products')->controller(ProductController::class)->group(function () {
