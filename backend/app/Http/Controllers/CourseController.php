@@ -28,7 +28,9 @@ class CourseController extends Controller
         try {
             $courses = Course::offset($page * $pageSize)->limit($pageSize)
                 ->when($search, function (Builder $query, string $search) {
-                    $query->where('title', 'LIKE', "%{$search}%");
+                    $query
+                        ->where('title', 'LIKE', "%{$search}%")
+                        ->orWhere('description', 'LIKE', "%{$search}%");
                 })
                 ->get();
 
