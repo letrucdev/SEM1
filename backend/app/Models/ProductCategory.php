@@ -12,6 +12,8 @@ class ProductCategory extends Model
 
     protected $fillable = ['name', 'slug'];
 
+    protected $touches = ['product'];
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);

@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\Course;
+use App\Models\CourseLesson;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductCategory;
@@ -35,12 +37,15 @@ Route::middleware('auth:sanctum')->missing(function (Request $request, Throwable
         Product::class => response()->json(['message' => 'Product not found.'], Response::HTTP_NOT_FOUND),
         ProductCategory::class => response()->json(['message' => 'Product category not found.'], Response::HTTP_NOT_FOUND),
         Order::class => response()->json(['message' => 'Order not found.'], Response::HTTP_NOT_FOUND),
+        Course::class => response()->json(['message' => 'Course not found.'], Response::HTTP_NOT_FOUND),
+        CourseLesson::class => response()->json(['message' => 'Lesson not found.'], Response::HTTP_NOT_FOUND),
         default => response()->json(['message' => $modelName . ' not found.'], Response::HTTP_NOT_FOUND)
     };
 })->group(function () {
     require __DIR__ . '/product_routes.php';
     require __DIR__ . '/cart_routes.php';
     require __DIR__ . '/order_routes.php';
+    require __DIR__ . '/course_routes.php';
 });
 
 

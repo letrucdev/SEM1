@@ -10,10 +10,6 @@ class SupportTicket extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['handler_id', 'subject', 'message', 'contact_email', 'contact_phone'];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ['subject', 'message', 'contact_email', 'contact_phone'];
+    
 }

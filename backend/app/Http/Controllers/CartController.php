@@ -14,13 +14,14 @@ class CartController extends Controller
     public function index()
     {
         try {
-            $cart = Auth::user()->cart()->first();
+            $carts = Auth::user()->cart();
+            if (!$carts->count()) $carts->create();
 
             return response()->json([
                 'message' => 'Cart retrieved successfully.',
-                'data' => $cart,
+                'data' => $carts->get(),
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return response()->json([
                 'error' => 'An error occurred while retrieving the cart.',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);

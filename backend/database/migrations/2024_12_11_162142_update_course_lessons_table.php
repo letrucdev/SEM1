@@ -10,13 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('support_tickets', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('subject');
-            $table->text('message');
-            $table->string('contact_email');
-            $table->string('contact_phone');
-            $table->timestamps();
+        Schema::table('course_lessons', function (Blueprint $table) {
+            $table->text('content')->nullable()->change();
         });
     }
 
@@ -25,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('support_tickets');
+        Schema::table('course_lessons', function (Blueprint $table) {
+            $table->string('content')->nullable()->change();
+        });
     }
 };

@@ -10,7 +10,9 @@ class CourseLesson extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['course_id', 'title', 'content', 'video_path', 'duration'];
+    protected $fillable = ['title', 'content', 'video_path', 'duration'];
+
+    protected $touches = ['course'];
 
     public function course(): BelongsTo
     {

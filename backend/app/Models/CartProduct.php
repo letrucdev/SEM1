@@ -12,6 +12,13 @@ class CartProduct extends Model
 
     protected $fillable = ['quantity', 'product_id'];
 
+    protected $touches = ['cart'];
+
+    public function cart(): BelongsTo
+    {
+        return $this->belongsTo(Cart::class);
+    }
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
