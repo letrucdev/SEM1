@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
          });*/
 
         ResetPasswordNotification::createUrlUsing(function (object $notifiable, string $token) {
-            return config('app.frontend_url') . "/password-reset/$token?email={$notifiable->email}";
+            return config('app.frontend_url') . "/auth/password-reset/$token?email={$notifiable->email}";
         });
     }
 }

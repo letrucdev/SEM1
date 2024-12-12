@@ -15,10 +15,10 @@ class RegisterController extends Controller
     {
         $request->validate([
             'email' => 'required|email|unique:users',
-            'first_name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
+            'first_name' => 'required|string|alpha|max:50',
+            'last_name' => 'required|string|alpha|max:50',
             'password' => 'required|min:8|confirmed',
-            'birthdate' => 'required|date:d-m-Y',
+            'birthdate' => 'required|date',
         ]);
 
         try {
