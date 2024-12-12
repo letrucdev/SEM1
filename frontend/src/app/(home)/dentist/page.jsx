@@ -39,7 +39,7 @@ export default function OurDentistPage() {
         </p>
       </header>
 
-      <main className="p-8">
+      <main className="p-8 max-w-7xl ml-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {dentists.map((dentist, index) => (
             <div
