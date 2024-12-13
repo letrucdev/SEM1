@@ -1,27 +1,29 @@
 import {
 	Card,
-	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
+import { makeImageUrlFromPath } from '@/lib/utils'
 import Image from 'next/image'
-import dentistAvatar from '@/public/member-03.png'
 
 export const DentistCard = ({ dentist }) => {
 	return (
 		<Card className='hover:bg-primary-foreground cursor-pointer transition-all'>
-			<CardHeader>
-				<div className='mb-3'>
+			<CardHeader className='h-full justify-center'>
+				<div className='flex w-full mb-4 h-full'>
 					<Image
-						src={dentistAvatar} // Replace with your actual image path
+						width={540}
+						height={580}
+						src={makeImageUrlFromPath(dentist.avatar_path)} // Replace with your actual image path
 						alt='About Dental'
-						className='w-full h-full object-contain'
+						className='w-full h-full object-cover mt-auto'
 					/>
 				</div>
-				<CardTitle>{dentist.name}</CardTitle>
-				<CardDescription>{dentist.qualification}</CardDescription>
+				<CardTitle>
+					{dentist.first_name} {dentist.last_name}
+				</CardTitle>
+				<CardDescription>{dentist.education}</CardDescription>
 			</CardHeader>
 		</Card>
 	)

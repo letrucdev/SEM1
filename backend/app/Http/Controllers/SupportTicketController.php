@@ -27,7 +27,18 @@ class SupportTicketController extends Controller
                 })
                 ->get();
 
-            return response()->json(['message' => 'Support tickets retrieved successfully', 'data' => $supportTickets]);
+            $supportTicketsCount = SupportTicket::query()
+                ->when($search, function ($query, $search) {
+                    $query->where('message', 'LIKE', "%{$search}%")->orWhere('subject', 'LIKE', "%{$search}%");
+                })
+                ->count();
+
+            $supportTicketsWithIndex = $supportTickets->map(function ($ticket, $index) use ($page, $pageSize) {
+                $ticket->order = $page * $pageSize + $index + 1;
+                return $ticket;
+            });
+
+            return response()->json(['message' => 'Support tickets retrieved successfully', 'total' => $supportTicketsCount, 'data' => $supportTicketsWithIndex]);
         } catch (\Exception) {
             return response()->json(['error' => 'An error occurred while retrieving the support tickets'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

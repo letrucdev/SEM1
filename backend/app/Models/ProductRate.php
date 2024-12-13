@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductRate extends Model
 {
-    protected $fillable = ['user_id', 'star'];
+    use HasUuids;
+
+    protected $fillable = ['user_id', 'product_id', 'star'];
 
     public function product(): BelongsTo
     {

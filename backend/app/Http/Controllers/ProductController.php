@@ -20,7 +20,6 @@ class ProductController extends Controller
             'page' => 'nullable|integer|min:0',
             'pageSize' => 'nullable|integer|min:1|max:100',
             'category' => 'nullable|string|max:255',
-            'inStock' => 'nullable|boolean',
             'fromPrice' => 'nullable|numeric|min:0',
             'toPrice' => 'nullable|numeric|min:0',
             'search' => 'nullable|string|max:255',
@@ -70,9 +69,35 @@ class ProductController extends Controller
                 ->with(['productImages', 'productCategory'])
                 ->get();
 
+            $productCount = Product::query()
+                ->when($category, function (Builder $query, string $category) {
+                    $query->whereHas('productCategory', function (Builder $query) use ($category) {
+                        $query->where('slug', $category);
+                    });
+                })
+                ->when($inStock, function (Builder $query) {
+                    $query->where('stock', '>', '0');
+                })
+                ->when($fromPrice, function (Builder $query, float $fromPrice) {
+                    $query->where('price', '>=', $fromPrice);
+                })
+                ->when($toPrice, function (Builder $query, float $toPrice) {
+                    $query->where('price', '<=', $toPrice);
+                })
+                ->when($search, function (Builder $query, string $search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                })
+                ->count();
+
+            $productsWithIndex = $products->map(function ($product, $index) use ($page, $pageSize) {
+                $product->order = $page * $pageSize + $index + 1;
+                return $product;
+            });
+
             return response()->json([
                 'message' => 'List of products',
-                'data' => $products
+                'total' => $productCount,
+                'data' => $productsWithIndex
             ]);
         } catch (\Exception) {
             return response()->json([
@@ -285,7 +310,8 @@ class ProductController extends Controller
         ]);
 
         try {
-            $product->productRates()->updateOrInsert(['user_id' => \Auth::id()], ['star' => $request->star]);
+
+            $product->productRates()->updateOrCreate(['user_id' => \Auth::id()], ['star' => $request->star]);
 
             return response()->json([
                 'message' => 'Rate product successfully',

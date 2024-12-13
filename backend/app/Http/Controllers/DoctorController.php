@@ -17,12 +17,19 @@ class DoctorController extends Controller
         $request->validate([
             'page' => 'nullable|integer|min:0',
             'pageSize' => 'nullable|integer|min:1|max:100',
-            'search' => 'nullable|string|max:255'
+            'search' => 'nullable|string|max:255',
+            'sortBy' => ['nullable', 'string',
+                Rule::in(
+                    [
+                        'created_at-asc', 'created_at-desc',
+                    ])
+            ],
         ]);
 
         $page = $request->query('page', 0);
         $pageSize = $request->query('pageSize', 10);
         $search = $request->query('search');
+        $sortBy = $request->query('sortBy');
 
         try {
             $doctors = User::offset($page * $pageSize)->limit($pageSize)
@@ -33,9 +40,19 @@ class DoctorController extends Controller
                         ->orWhere('last_name', 'like', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%');
                 })
+                ->when($sortBy, function ($query, $sortBy) {
+                    list($column, $direction) = explode('-', $sortBy);
+                    $query->orderBy($column, $direction);
+                })
                 ->get();
 
-            return response()->json(['message' => 'Doctors retrieved successfully', 'data' => $doctors]);
+            $doctorCount = User::where('role', UserRole::Doctor)->count();
+            $doctorsWithIndex = $doctors->map(function ($doctor, $index) use ($page, $pageSize) {
+                $doctor->order = $page * $pageSize + $index + 1;
+                return $doctor;
+            });
+
+            return response()->json(['message' => 'Doctors retrieved successfully', 'total' => $doctorCount, 'data' => $doctorsWithIndex]);
         } catch (\Exception) {
             return response()->json(['message' => 'An error occurred while retrieving doctors'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

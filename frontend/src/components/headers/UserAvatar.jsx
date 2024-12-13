@@ -1,5 +1,13 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Lock, LogOut, User } from 'lucide-react'
+import {
+	BriefcaseMedical,
+	Lock,
+	LogOut,
+	Package,
+	ReceiptText,
+	User,
+	UsersIcon,
+} from 'lucide-react'
 
 import {
 	DropdownMenu,
@@ -13,20 +21,57 @@ import {
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthProvider'
 
-export const UserAvatar = ({ user }) => {
+export const UserAvatar = ({
+	user: { last_name, first_name, avatar, role },
+}) => {
 	const { logout } = useAuth()
+
+	const makeAvatarFallbackFromName = ({ first_name, last_name }) => {
+		return `${first_name.charAt(0).toUpperCase()}${last_name
+			.charAt(0)
+			.toUpperCase()}`
+	}
+
+	const additionalMenuItems = {
+		role: {
+			Admin: [
+				{
+					title: 'Manage users',
+					href: '/manage-users',
+					icon: <UsersIcon />,
+				},
+				{
+					title: 'Manage dentists',
+					href: '/manage-dentists',
+					icon: <BriefcaseMedical />,
+				},
+				{
+					title: 'Manage tickets',
+					href: '/manage-tickets',
+					icon: <ReceiptText />,
+				},
+				{
+					title: 'Manage products',
+					href: '/manage-products',
+					icon: <Package />,
+				},
+			],
+		},
+	}
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Avatar className='cursor-pointer'>
-					<AvatarImage src={user.avatar} alt='User avatar' />
-					<AvatarFallback>{user.first_name}</AvatarFallback>
+					<AvatarImage src={avatar} alt='User avatar' />
+					<AvatarFallback>
+						{makeAvatarFallbackFromName({ first_name, last_name })}
+					</AvatarFallback>
 				</Avatar>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='w-56' align='end'>
 				<DropdownMenuLabel>
-					{user.last_name} {user.first_name}
+					{last_name} {first_name}
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
@@ -44,6 +89,22 @@ export const UserAvatar = ({ user }) => {
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
+				{additionalMenuItems.role[role] && (
+					<>
+						<DropdownMenuGroup>
+							{additionalMenuItems.role[role].map((item) => {
+								return (
+									<DropdownMenuItem asChild key={item.title}>
+										<Link href={item.href}>
+											{item.icon} {item.title}
+										</Link>
+									</DropdownMenuItem>
+								)
+							})}
+						</DropdownMenuGroup>
+						<DropdownMenuSeparator />
+					</>
+				)}
 				<DropdownMenuItem onClick={logout}>
 					<LogOut />
 					<span>Log out</span>

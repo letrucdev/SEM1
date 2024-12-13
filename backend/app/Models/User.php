@@ -80,10 +80,10 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class);
     }
 
-    public function productRates(): HasMany
-    {
-        return $this->hasMany(ProductRate::class);
-    }
+    /*    public function productRates(): HasMany
+        {
+            return $this->hasMany(ProductRate::class);
+        }*/
 
     /**
      * Send a password reset notification to the user.

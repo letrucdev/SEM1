@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query'
 export const useGetMe = ({ enabled }) => {
 	const { data, isPending, refetch } = useQuery({
 		queryKey: ['me'],
-		queryFn: () => userSerivce.getMe,
+		queryFn: () => userSerivce.getMe(),
 		enabled,
+		retry: 0,
 	})
 
 	const me = data?.data?.data

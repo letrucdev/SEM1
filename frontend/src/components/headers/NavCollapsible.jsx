@@ -8,6 +8,7 @@ import {
 import { Button } from '../ui/button'
 import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
+import { SheetClose } from '../ui/sheet'
 
 export const NavCollapsible = ({ label, items }) => {
 	const [isOpen, setIsOpen] = React.useState(false)
@@ -31,14 +32,11 @@ export const NavCollapsible = ({ label, items }) => {
 			</div>
 			<CollapsibleContent className='flex flex-col'>
 				{items.map((item) => (
-					<Button
-						asChild
-						variant='ghost'
-						className='justify-start'
-						key={item.title}
-					>
-						<Link href={item.href}>{item.title}</Link>
-					</Button>
+					<SheetClose asChild key={item.title}>
+						<Button asChild variant='ghost' className='justify-start'>
+							<Link href={'#!'}>{item.title}</Link>
+						</Button>
+					</SheetClose>
 				))}
 			</CollapsibleContent>
 		</Collapsible>

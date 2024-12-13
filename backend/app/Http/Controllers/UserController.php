@@ -41,6 +41,7 @@ class UserController extends Controller
             $avatarFile = $request->file('avatar');
             $birthdate = $request->input('birthdate', $user->birthdate);
 
+
             $oldAvatarPath = $user->avatar_path;
             $avatarPath = $avatarFile ? $avatarFile->store('avatars/users', 'public') : $oldAvatarPath;
 
@@ -73,7 +74,7 @@ class UserController extends Controller
         try {
             $user = Auth::user();
             if (!Hash::check($request->password, $user->password)) {
-                return response()->json(['errors' => ['password' => ['Current password is incorrect']]], Response::HTTP_UNAUTHORIZED);
+                return response()->json(['errors' => ['password' => ['Current password is incorrect']]], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $user->update(['password' => Hash::make($request->new_password)]);
@@ -91,7 +92,7 @@ class UserController extends Controller
             'pageSize' => 'nullable|integer|min:1',
             'search' => 'nullable|string|max:255'
         ]);
-        
+
         $page = $request->query('page', 0);
         $pageSize = $request->query('pageSize', 10);
         $search = $request->query('search');
@@ -107,7 +108,21 @@ class UserController extends Controller
                 })
                 ->get();
 
-            return response()->json(['message' => 'Users retrieved successfully', 'data' => $users]);
+            $userCount = User::where('role', \App\Enums\UserRole::User)
+                ->when($search, function ($query, $search) {
+                    $query
+                        ->where('first_name', 'like', '%' . $search . '%')
+                        ->orWhere('last_name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                })
+                ->count();
+
+            $userWithIndex = $users->map(function ($user, $index) use ($page, $pageSize) {
+                $user->order = $page * $pageSize + $index + 1;
+                return $user;
+            });
+
+            return response()->json(['message' => 'Users retrieved successfully', 'total' => $userCount, 'data' => $userWithIndex]);
         } catch (\Exception) {
             return response()->json(['message' => 'An error occurred while fetching user data'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

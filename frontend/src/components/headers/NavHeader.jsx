@@ -13,8 +13,11 @@ import {
 } from '@/components/ui/navigation-menu'
 import {
 	Sheet,
+	SheetClose,
 	SheetContent,
+	SheetDescription,
 	SheetHeader,
+	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { Button } from '../ui/button'
@@ -79,29 +82,59 @@ const NavHeader = () => {
 				</SheetTrigger>
 
 				<SheetContent>
+					<SheetTitle className='hidden'></SheetTitle>
+					<SheetDescription className='hidden'></SheetDescription>
 					<SheetHeader className={'text-left'}>
+						{/* <SheetTitle className='hidden'></SheetTitle>
+						<SheetDescription className='hidden'></SheetDescription> */}
+						{/* 	<SheetTitle></SheetTitle>
+						<SheetDescription></SheetDescription> */}
 						<LogoHeader />
 					</SheetHeader>
 					<div className='flex -mx-4 h-full overflow-hidden py-4'>
 						<div className='flex flex-col grow overflow-auto pb-4'>
-							<Button
-								asChild
-								variant='ghost'
-								className='justify-start font-semibold shrink-0'
-							>
-								<Link href={'/'}>Home</Link>
-							</Button>
+							<SheetClose asChild>
+								<Button
+									asChild
+									variant='ghost'
+									className='justify-start font-semibold shrink-0'
+								>
+									<Link href={'/'}>Home</Link>
+								</Button>
+							</SheetClose>
 
-							<Button
-								asChild
-								variant='ghost'
-								className='justify-start font-semibold shrink-0'
-							>
-								<Link href={'/'}>Product</Link>
-							</Button>
+							<SheetClose asChild>
+								<Button
+									asChild
+									variant='ghost'
+									className='justify-start font-semibold shrink-0'
+								>
+									<Link href={'/dentists'}>Dentists</Link>
+								</Button>
+							</SheetClose>
+
+							<SheetClose asChild>
+								<Button
+									asChild
+									variant='ghost'
+									className='justify-start font-semibold shrink-0'
+								>
+									<Link href={'/products'}>Products</Link>
+								</Button>
+							</SheetClose>
 
 							<NavCollapsible items={researchs} label={'Research'} />
 							<NavCollapsible items={educations} label={'Education'} />
+
+							<SheetClose asChild>
+								<Button
+									asChild
+									variant='ghost'
+									className='justify-start font-semibold shrink-0'
+								>
+									<Link href={'/contact-us'}>Contact Us</Link>
+								</Button>
+							</SheetClose>
 						</div>
 					</div>
 				</SheetContent>
@@ -116,13 +149,23 @@ const NavHeader = () => {
 							</NavigationMenuLink>
 						</Link>
 					</NavigationMenuItem>
+
 					<NavigationMenuItem>
-						<Link href='/products' legacyBehavior passHref>
+						<Link href='/dentists' legacyBehavior passHref>
 							<NavigationMenuLink className={navigationMenuTriggerStyle()}>
-								Product
+								Dentists
 							</NavigationMenuLink>
 						</Link>
 					</NavigationMenuItem>
+
+					<NavigationMenuItem>
+						<Link href='/products' legacyBehavior passHref>
+							<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+								Products
+							</NavigationMenuLink>
+						</Link>
+					</NavigationMenuItem>
+
 					<NavigationMenuItem>
 						<NavigationMenuTrigger>Research</NavigationMenuTrigger>
 						<NavigationMenuContent>
@@ -139,6 +182,7 @@ const NavHeader = () => {
 							</ul>
 						</NavigationMenuContent>
 					</NavigationMenuItem>
+
 					<NavigationMenuItem>
 						<NavigationMenuTrigger>Education</NavigationMenuTrigger>
 						<NavigationMenuContent>
@@ -154,6 +198,14 @@ const NavHeader = () => {
 								))}
 							</ul>
 						</NavigationMenuContent>
+					</NavigationMenuItem>
+
+					<NavigationMenuItem>
+						<Link href='/contact-us' legacyBehavior passHref>
+							<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+								Contact Us
+							</NavigationMenuLink>
+						</Link>
 					</NavigationMenuItem>
 				</NavigationMenuList>
 			</NavigationMenu>

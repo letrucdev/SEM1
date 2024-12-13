@@ -2,6 +2,7 @@
 import { useLogout } from '@/hooks/auth/useLogout'
 import { useGetMe } from '@/hooks/user/useGetMe'
 import React, { useEffect } from 'react'
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
 
 export const AuthStatus = {
 	Authenticating: 'authenticating',
@@ -50,10 +51,7 @@ export const AuthProvider = ({ children }) => {
 	}, [user])
 
 	useEffect(() => {
-		if (me) {
-			setUser(me)
-			localStorage.setItem('user', JSON.stringify(me))
-		}
+		if (me) setUser(me)
 	}, [me])
 
 	const logout = () => {
@@ -66,6 +64,12 @@ export const AuthProvider = ({ children }) => {
 	return (
 		<AuthContext.Provider value={{ authStatus, user, setUser, logout }}>
 			{authStatus !== AuthStatus.Authenticating && children}
+			<ProgressBar
+				color='hsl(var(--primary))'
+				options={{ showSpinner: false }}
+				height='4px'
+				shallowRouting
+			/>
 		</AuthContext.Provider>
 	)
 }
