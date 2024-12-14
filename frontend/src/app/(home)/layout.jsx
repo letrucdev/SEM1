@@ -187,9 +187,9 @@ export default function HomeLayout({ children }) {
             Product
           </Link>
           <Link
-            href="/research"
+            href="/Research"
             className={`hover:underline ${
-              pathName.startsWith("/research")
+              pathName.startsWith("/Research")
                 ? "text-blue-500 underline font-semibold"
                 : "text-gray-700"
             }`}
@@ -197,7 +197,7 @@ export default function HomeLayout({ children }) {
             Research
           </Link>
           <Link
-            href="/education"
+            href="/Education"
             className={`hover:underline ${
               pathName.startsWith("/education")
                 ? "text-blue-500 underline font-semibold"
