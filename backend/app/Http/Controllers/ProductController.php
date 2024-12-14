@@ -108,7 +108,7 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'product_category_id' => 'required|uuid|exists:product_categories,id',
             'images' => 'required|array|min:1',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:1024'
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:1mb'
         ]);
 
 

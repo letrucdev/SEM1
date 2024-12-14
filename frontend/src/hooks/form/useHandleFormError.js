@@ -11,7 +11,12 @@ export const useHandleFormError = () => {
 			for (const [field, errors] of Object.entries(
 				error.response.data.errors
 			)) {
-				form.setError(field, { message: errors[0] })
+				let fieldName = field
+				if (field.split('.').length > 1) {
+					fieldName = field.split('.')[0]
+				}
+
+				form.setError(fieldName, { message: errors[0] })
 			}
 		}
 	}

@@ -3,6 +3,7 @@ import React, {
 	useCallback,
 	useEffect,
 	useImperativeHandle,
+	useRef,
 	useState,
 } from 'react'
 import { useForm } from 'react-hook-form'
@@ -18,7 +19,6 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/components/ui/input'
 import { useHandleFormError } from '@/hooks/form/useHandleFormError'
-import { Card } from '@/components/ui/card'
 import {
 	Select,
 	SelectContent,
@@ -29,6 +29,10 @@ import {
 import { useGetProductCategories } from '@/hooks/product/useGetProductCategories'
 import { useUpdateProduct } from '@/hooks/product/useUpdateProduct'
 import { makeImageUrlFromPath } from '@/lib/utils'
+import { ProductPreviewImage } from './CreateProductForm'
+import { Button } from '@/components/ui/button'
+import { ImageUp } from 'lucide-react'
+import { useDeleteProductImage } from '@/hooks/product/useDeleteProductImage'
 
 const MAX_FILE_SIZE = 5000000 // 5MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png']
@@ -68,11 +72,15 @@ const formSchema = z.object({
 export const UpdateProductForm = forwardRef(({ onSuccess, product }, ref) => {
 	const { handleFormError } = useHandleFormError()
 	const { updateProductMutateAsync } = useUpdateProduct()
+	const { deleteProductImageMutateAsync, isPendingDeleteProductImage } =
+		useDeleteProductImage()
 	const { productCategories, isPendingGetProductCategories } =
 		useGetProductCategories()
 
-	const [imagesPreviews, setImagesPreviews] = useState([])
-	const [currentImagesPreviews, setCurrentImagesPreviews] = useState([])
+	const [previewImages, setPreviewImages] = useState([])
+	const [currentImages, setCurrentImages] = useState([])
+
+	const filesInputRef = useRef(null)
 
 	const form = useForm({
 		resolver: zodResolver(formSchema),
@@ -101,29 +109,65 @@ export const UpdateProductForm = forwardRef(({ onSuccess, product }, ref) => {
 			const files = event.target.files || []
 			if (files.length === 0) return
 
-			const filesValue = Array.from([
-				...Array.from(form.getValues().images || []),
-				...event.target.files,
-			])
+			const existingFiles = form.getValues().images || []
+			const existingFileNames = existingFiles.map((file) => file.name)
 
-			const objectUrls = filesValue.map((file) => URL.createObjectURL(file))
+			const newFiles = Array.from(files).filter(
+				(file) => !existingFileNames.includes(file.name)
+			)
+
+			const filesValue = [...existingFiles, ...newFiles]
+
+			const previewImages = filesValue.map((file) => {
+				return {
+					url: URL.createObjectURL(file),
+					name: file.name,
+				}
+			})
+
 			field.onChange(filesValue)
 
-			setImagesPreviews(objectUrls)
+			setPreviewImages(previewImages)
 		},
 		[form]
 	)
 
+	const handleRemoveImage = useCallback(
+		(field, image, isPreview = false) =>
+			async () => {
+				if (isPreview) {
+					setPreviewImages((prev) =>
+						prev.filter((_image) => _image.url !== image.url)
+					)
+					field.onChange(
+						field?.value.filter((file) => file.name !== image.name)
+					)
+				} else {
+					await deleteProductImageMutateAsync({
+						productId: product.id,
+						imageId: image.id,
+					})
+					setCurrentImages((prev) =>
+						prev.filter((_image) => _image.id !== image.id)
+					)
+				}
+			},
+		[deleteProductImageMutateAsync, product.id]
+	)
+
 	useEffect(() => {
-		return () => imagesPreviews.forEach((url) => URL.revokeObjectURL(url))
-	}, [imagesPreviews])
+		return () => previewImages.forEach((url) => URL.revokeObjectURL(url))
+	}, [previewImages])
 
 	useEffect(() => {
 		if (product.product_images) {
-			setCurrentImagesPreviews(
-				product.product_images.map((image) =>
-					makeImageUrlFromPath(image.image_path)
-				)
+			setCurrentImages(
+				product.product_images.map((image) => {
+					return {
+						...image,
+						image_path: makeImageUrlFromPath(image.image_path),
+					}
+				})
 			)
 		}
 	}, [product.product_images])
@@ -225,24 +269,44 @@ export const UpdateProductForm = forwardRef(({ onSuccess, product }, ref) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Product Images</FormLabel>
-
-							<div className='grid grid-cols-3 gap-4'>
-								{currentImagesPreviews.length > 0 &&
-									currentImagesPreviews.map((preview) => (
-										<ProductPreviewImage src={preview} key={preview} />
+							<div className='grid grid-cols-3 gap-2'>
+								{currentImages.length > 0 &&
+									currentImages.map((image) => (
+										<ProductPreviewImage
+											src={image.image_path}
+											key={image.id}
+											onRemove={handleRemoveImage(field, image)}
+											disabled={isPendingDeleteProductImage}
+										/>
 									))}
 
-								{imagesPreviews.length > 0 &&
-									imagesPreviews.map((preview) => (
-										<ProductPreviewImage src={preview} key={preview} />
+								{previewImages.length > 0 &&
+									previewImages.map((image) => (
+										<ProductPreviewImage
+											src={image.url}
+											key={image.name}
+											onRemove={handleRemoveImage(field, image, true)}
+										/>
 									))}
 							</div>
-
+							<Button
+								className='w-full'
+								variant='outline'
+								type='button'
+								disabled={isPendingDeleteProductImage}
+								onClick={() => filesInputRef?.current.click()}
+							>
+								<ImageUp /> Upload Images
+							</Button>
 							<FormControl>
-								<Input
+								<input
+									hidden
+									multiple
+									disabled={isPendingDeleteProductImage}
+									ref={filesInputRef}
 									type='file'
 									accept='image/png, image/jpeg'
-									multiple
+									value={''}
 									onChange={(e) => handleChangeImagesInput(e, field)}
 								/>
 							</FormControl>
@@ -254,20 +318,5 @@ export const UpdateProductForm = forwardRef(({ onSuccess, product }, ref) => {
 		</Form>
 	)
 })
-
-export const ProductPreviewImage = ({ src }) => {
-	return (
-		<Card className='w-full h-32 overflow-hidden'>
-			{
-				// eslint-disable-next-line @next/next/no-img-element
-				<img
-					src={src}
-					alt={`Product image`}
-					className='w-full h-full object-scale-down'
-				/>
-			}
-		</Card>
-	)
-}
 
 UpdateProductForm.displayName = 'UpdateProductForm'

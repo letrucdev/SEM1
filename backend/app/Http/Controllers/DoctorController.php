@@ -51,10 +51,13 @@ class DoctorController extends Controller
 
             $doctorCount = $doctors->count();
 
-            $doctorsWithIndex = $doctors->offset($page * $pageSize)->limit($pageSize)->get()->map(function ($doctor, $index) use ($page, $pageSize) {
-                $doctor->order = $page * $pageSize + $index + 1;
-                return $doctor;
-            });
+            $doctorsWithIndex = $doctors
+                ->offset($page * $pageSize)->limit($pageSize)
+                ->get()
+                ->map(function ($doctor, $index) use ($page, $pageSize) {
+                    $doctor->order = $page * $pageSize + $index + 1;
+                    return $doctor;
+                });
 
             return response()->json(['message' => 'Doctors retrieved successfully', 'total' => $doctorCount, 'data' => $doctorsWithIndex]);
         } catch (\Exception) {

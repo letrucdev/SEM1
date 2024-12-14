@@ -111,10 +111,13 @@ class UserController extends Controller
 
             $userCount = $users->count();
 
-            $userWithIndex = $users->offset($page * $pageSize)->limit($pageSize)->get()->map(function ($user, $index) use ($page, $pageSize) {
-                $user->order = $page * $pageSize + $index + 1;
-                return $user;
-            });
+            $userWithIndex = $users
+                ->offset($page * $pageSize)->limit($pageSize)
+                ->get()
+                ->map(function ($user, $index) use ($page, $pageSize) {
+                    $user->order = $page * $pageSize + $index + 1;
+                    return $user;
+                });
 
             return response()->json(['message' => 'Users retrieved successfully', 'total' => $userCount, 'data' => $userWithIndex]);
         } catch (\Exception) {
