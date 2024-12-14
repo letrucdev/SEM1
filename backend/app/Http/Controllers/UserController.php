@@ -98,26 +98,20 @@ class UserController extends Controller
         $search = $request->query('search');
 
         try {
-            $users = User::offset($page * $pageSize)->limit($pageSize)
+            $users = User::query()
                 ->where('role', \App\Enums\UserRole::User)
                 ->when($search, function ($query, $search) {
-                    $query
-                        ->where('first_name', 'like', '%' . $search . '%')
-                        ->orWhere('last_name', 'like', '%' . $search . '%')
-                        ->orWhere('email', 'like', '%' . $search . '%');
-                })
-                ->get();
+                    $query->where(function ($q) use ($search) {
+                        $q
+                            ->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    });
+                });
 
-            $userCount = User::where('role', \App\Enums\UserRole::User)
-                ->when($search, function ($query, $search) {
-                    $query
-                        ->where('first_name', 'like', '%' . $search . '%')
-                        ->orWhere('last_name', 'like', '%' . $search . '%')
-                        ->orWhere('email', 'like', '%' . $search . '%');
-                })
-                ->count();
+            $userCount = $users->count();
 
-            $userWithIndex = $users->map(function ($user, $index) use ($page, $pageSize) {
+            $userWithIndex = $users->offset($page * $pageSize)->limit($pageSize)->get()->map(function ($user, $index) use ($page, $pageSize) {
                 $user->order = $page * $pageSize + $index + 1;
                 return $user;
             });

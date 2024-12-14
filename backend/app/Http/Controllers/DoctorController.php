@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -32,22 +33,25 @@ class DoctorController extends Controller
         $sortBy = $request->query('sortBy');
 
         try {
-            $doctors = User::offset($page * $pageSize)->limit($pageSize)
+            $doctors = User::query()
                 ->where('role', UserRole::Doctor)
                 ->when($search, function ($query, $search) {
-                    $query
-                        ->where('first_name', 'like', '%' . $search . '%')
-                        ->orWhere('last_name', 'like', '%' . $search . '%')
-                        ->orWhere('email', 'like', '%' . $search . '%');
+                    $query->where(function ($q) use ($search) {
+                        $q
+                            ->where('first_name', 'like', '%' . $search . '%')
+                            ->orWhere('last_name', 'like', '%' . $search . '%')
+                            ->orWhere('email', 'like', '%' . $search . '%');
+                    });
                 })
                 ->when($sortBy, function ($query, $sortBy) {
                     list($column, $direction) = explode('-', $sortBy);
                     $query->orderBy($column, $direction);
-                })
-                ->get();
+                });
 
-            $doctorCount = User::where('role', UserRole::Doctor)->count();
-            $doctorsWithIndex = $doctors->map(function ($doctor, $index) use ($page, $pageSize) {
+
+            $doctorCount = $doctors->count();
+
+            $doctorsWithIndex = $doctors->offset($page * $pageSize)->limit($pageSize)->get()->map(function ($doctor, $index) use ($page, $pageSize) {
                 $doctor->order = $page * $pageSize + $index + 1;
                 return $doctor;
             });

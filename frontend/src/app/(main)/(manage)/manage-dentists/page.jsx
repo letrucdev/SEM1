@@ -5,12 +5,15 @@ import { formatDateTime } from '@/lib/utils'
 import { useEffect, useMemo, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { useGetDoctors } from '@/hooks/doctor/useGetDoctors'
+import { CreateDentistDialog } from '@/components/dialog/dentist/CreateDentistDialog'
+import { UpdateDentistDialog } from '@/components/dialog/dentist/UpdateDentistDialog'
+import { DeleteDentistDialog } from '@/components/dialog/dentist/DeleteDentistDialog'
 
 export default function ManageDentistsPage() {
 	const [pagination, setPagination] = useState(DEFAULT_PAGINATION)
 
 	const [filters, setFilters] = useState({
-		search: null,
+		search: '',
 	})
 
 	const [searchInput, setSearchInput] = useState('')
@@ -57,18 +60,29 @@ export default function ManageDentistsPage() {
 				title: 'Updated At',
 				minWidth: 200,
 			},
+			{
+				key: 'action',
+				title: 'Action',
+				minWidth: 200,
+			},
 		],
 		[]
 	)
 
 	const rows = useMemo(
 		() =>
-			doctors?.map((user, index) => {
+			doctors?.map((doctor) => {
 				return {
-					...user,
-					birthdate: formatDateTime(user.birthdate),
-					created_at: formatDateTime(user.created_at, true),
-					updated_at: formatDateTime(user.updated_at, true),
+					...doctor,
+					birthdate: formatDateTime(doctor.birthdate),
+					created_at: formatDateTime(doctor.created_at, true),
+					updated_at: formatDateTime(doctor.updated_at, true),
+					action: (
+						<span className='flex gap-2'>
+							<UpdateDentistDialog doctor={doctor} />
+							<DeleteDentistDialog doctorId={doctor.id} />
+						</span>
+					),
 				}
 			}),
 		[doctors]
@@ -98,6 +112,10 @@ export default function ManageDentistsPage() {
 		<div className='flex flex-col xl:flex-row justify-between pt-4 pb-6 container mx-auto gap-3 md:gap-8 px-6'>
 			<div className='flex flex-col w-full gap-2 sm:gap-4'>
 				<div className='flex flex-wrap gap-3'>
+					<CreateDentistDialog
+						disabled={isPendingGetDoctors}
+						buttonTriggerClassName={'mr-auto'}
+					/>
 					<Input
 						placeholder='Enter user name or email to search'
 						className='w-96 sm:ml-auto'

@@ -8,15 +8,31 @@ const doctorService = {
 	getDoctor: async (id) => {
 		// Implementation to fetch and return doctor data by id
 	},
-	createDoctor: async (doctorData) => {
-		// Implementation to create a new doctor
+	createDoctor: async (payload) => {
+		const formData = new FormData()
+		for (const key in payload) {
+			formData.append(key, payload[key])
+		}
+
+		await instance.post('/doctors', formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		})
 	},
-	updateDoctor: async (doctorId, updatedDoctorData) => {
-		// Implementation to update an existing doctor
+
+	updateDoctor: async ({ doctorId, ...payload }) => {
+		const formData = new FormData()
+		for (const key in payload) {
+			if (payload[key]) {
+				formData.append(key, payload[key])
+			}
+		}
+
+		await instance.post(`/doctors/${doctorId}`, formData, {
+			headers: { 'Content-Type': 'multipart/form-data' },
+		})
 	},
-	deleteDoctor: async (doctorId) => {
-		// Implementation to delete a doctor
-	},
+	deleteDoctor: async (doctorId) =>
+		await instance.delete(`/doctors/${doctorId}`),
 }
 
 export { doctorService }

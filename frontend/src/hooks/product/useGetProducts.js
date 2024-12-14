@@ -8,7 +8,7 @@ export const getProductsDefaultParams = {
 
 export const useGetProducts = (params = getProductsDefaultParams) => {
 	const { data, isPending, refetch } = useQuery({
-		queryKey: ['product', params],
+		queryKey: ['products', params],
 		queryFn: () => productService.getProducts(params),
 	})
 

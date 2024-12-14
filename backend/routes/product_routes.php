@@ -4,7 +4,11 @@ use App\Http\Controllers\ProductController;
 
 
 Route::prefix('products')->controller(ProductController::class)->group(function () {
-    Route::get('/categories', 'getProductCategories');
+
+    Route::withoutMiddleware('auth:sanctum')->group(function () {
+        Route::get('/', 'index');
+        Route::get('/categories', 'getProductCategories');
+    });
 
     Route::middleware('ability:manage-product')->prefix('category')->group(function () {
         Route::post('/', 'storeProductCategory');
@@ -14,7 +18,6 @@ Route::prefix('products')->controller(ProductController::class)->group(function 
         Route::delete('/{productCategory}', 'destroyProductCategory');
     });
 
-    Route::get('/', 'index');
 
     Route::get('/{product}', 'show');
 

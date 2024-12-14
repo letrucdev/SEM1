@@ -43,7 +43,7 @@ class ProductController extends Controller
         $search = $request->query('search');
 
         try {
-            $products = Product::offset($page * $pageSize)->limit($pageSize)
+            $products = Product::query()
                 ->when($category, function (Builder $query, string $category) {
                     $query->whereHas('productCategory', function (Builder $query) use ($category) {
                         $query->where('slug', $category);
@@ -64,35 +64,20 @@ class ProductController extends Controller
                 })
                 ->when($search, function (Builder $query, string $search) {
                     $query->where('name', 'LIKE', '%' . $search . '%');
-                })
+                });
+
+            $productCount = $products->count();
+
+            $productsWithIndex = $products
+                ->offset($page * $pageSize)
+                ->limit($pageSize)
                 ->withAvg('productRates', 'star')
                 ->with(['productImages', 'productCategory'])
-                ->get();
-
-            $productCount = Product::query()
-                ->when($category, function (Builder $query, string $category) {
-                    $query->whereHas('productCategory', function (Builder $query) use ($category) {
-                        $query->where('slug', $category);
-                    });
-                })
-                ->when($inStock, function (Builder $query) {
-                    $query->where('stock', '>', '0');
-                })
-                ->when($fromPrice, function (Builder $query, float $fromPrice) {
-                    $query->where('price', '>=', $fromPrice);
-                })
-                ->when($toPrice, function (Builder $query, float $toPrice) {
-                    $query->where('price', '<=', $toPrice);
-                })
-                ->when($search, function (Builder $query, string $search) {
-                    $query->where('name', 'LIKE', '%' . $search . '%');
-                })
-                ->count();
-
-            $productsWithIndex = $products->map(function ($product, $index) use ($page, $pageSize) {
-                $product->order = $page * $pageSize + $index + 1;
-                return $product;
-            });
+                ->get()
+                ->map(function ($product, $index) use ($page, $pageSize) {
+                    $product->order = $page * $pageSize + $index + 1;
+                    return $product;
+                });
 
             return response()->json([
                 'message' => 'List of products',
@@ -159,8 +144,8 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'nullable|string|max:255',
-            'price' => 'nullable|numeric',
-            'stock' => 'nullable|integer',
+            'price' => 'nullable|numeric|min:0',
+            'stock' => 'nullable|integer|min:0',
             'product_category_id' => 'nullable|uuid|exists:product_categories,id',
             'images' => 'nullable|array|min:1',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:1024'

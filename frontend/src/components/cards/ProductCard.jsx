@@ -19,19 +19,6 @@ import {
 } from '../ui/tooltip'
 
 export const ProductCard = ({ product }) => {
-	const [rating, setRating] = React.useState(0)
-
-	// Catch Rating value
-	const handleRating = (rate) => {
-		setRating(rate)
-
-		// other logic
-	}
-	// Optinal callback functions
-	const onPointerEnter = () => console.log('Enter')
-	const onPointerLeave = () => console.log('Leave')
-	const onPointerMove = (value, index) => console.log(value, index)
-
 	return (
 		<Card className='hover:bg-primary-foreground hover:-translate-y-1 cursor-pointer transition-all flex flex-col overflow-hidden min-h-[365px]'>
 			<div className='flex w-full mb-4 min-h-44 max-h-44 overflow-hidden grow'>
@@ -40,7 +27,7 @@ export const ProductCard = ({ product }) => {
 					height={500}
 					src={makeImageUrlFromPath(product?.product_images?.[0]?.image_path)} // Replace with your actual image path
 					alt={product.name}
-					className='w-full h-full object-cover mt-auto'
+					className='w-full h-full object-scale-down mt-auto'
 				/>
 			</div>
 			<CardHeader className='pt-0 h-full justify-between'>
@@ -54,10 +41,6 @@ export const ProductCard = ({ product }) => {
 						<Rating
 							size={16}
 							initialValue={product.product_rates_avg_star ?? 0}
-							onClick={handleRating}
-							onPointerEnter={onPointerEnter}
-							onPointerLeave={onPointerLeave}
-							onPointerMove={onPointerMove}
 							SVGclassName='inline'
 							transition
 							readonly
@@ -68,7 +51,12 @@ export const ProductCard = ({ product }) => {
 			</CardHeader>
 			<CardContent className='mt-auto'>
 				<div className='flex justify-between'>
-					<span className={cn('flex items-center gap-2', product.stock ? 'text-primary' : 'text-muted-foreground')}>
+					<span
+						className={cn(
+							'flex items-center gap-2',
+							product.stock ? 'text-primary' : 'text-muted-foreground'
+						)}
+					>
 						{product.stock > 0 ? (
 							<>
 								<Check size={16} />

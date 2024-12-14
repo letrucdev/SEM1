@@ -19,6 +19,9 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { useGetProductCategories } from '@/hooks/product/useGetProductCategories'
+import { CreateProductDialog } from '@/components/dialog/product/CreateProductDialog'
+import { UpdateProductDialog } from '@/components/dialog/product/UpdateProductDialog'
+import { DeleteProductDialog } from '@/components/dialog/product/DeleteProductDialog'
 
 export default function ManageProductsPage() {
 	const [pagination, setPagination] = useState(DEFAULT_PAGINATION)
@@ -27,7 +30,7 @@ export default function ManageProductsPage() {
 		inStock: null,
 		sortBy: null,
 		category: null,
-		search: null,
+		search: '',
 	})
 
 	const [searchInput, setSearchInput] = useState('')
@@ -45,7 +48,7 @@ export default function ManageProductsPage() {
 			{
 				key: 'order',
 				title: '#',
-				minWidth: 75,
+				minWidth: 65,
 			},
 			{
 				key: 'name',
@@ -55,32 +58,37 @@ export default function ManageProductsPage() {
 			{
 				key: 'price',
 				title: 'Price',
-				minWidth: 200,
+				minWidth: 150,
 			},
 			{
 				key: 'stock',
 				title: 'Stock',
-				minWidth: 200,
+				minWidth: 150,
 			},
 			{
 				key: 'product_rates_avg_star',
 				title: 'Average Rating',
-				minWidth: 200,
+				minWidth: 150,
 			},
 			{
 				key: 'product_category',
 				title: 'Category',
-				minWidth: 200,
+				minWidth: 150,
 			},
 			{
 				key: 'created_at',
 				title: 'Created At',
-				minWidth: 200,
+				minWidth: 150,
 			},
 			{
 				key: 'updated_at',
 				title: 'Updated At',
-				minWidth: 200,
+				minWidth: 150,
+			},
+			{
+				key: 'action',
+				title: 'Action',
+				minWidth: 150,
 			},
 		],
 		[]
@@ -88,13 +96,19 @@ export default function ManageProductsPage() {
 
 	const rows = useMemo(
 		() =>
-			products?.map((product, index) => {
+			products?.map((product) => {
 				return {
 					...product,
 					price: formatCurrency(product.price),
 					product_category: product.product_category.name,
 					created_at: formatDateTime(product.created_at, true),
 					updated_at: formatDateTime(product.updated_at, true),
+					action: (
+						<span className='flex gap-2'>
+							<UpdateProductDialog product={product} />
+							<DeleteProductDialog productId={product.id} />
+						</span>
+					),
 				}
 			}),
 		[products]
@@ -197,6 +211,10 @@ export default function ManageProductsPage() {
 						value={searchInput}
 						onChange={handleChangeSearchInput}
 					/>
+				</div>
+
+				<div className='flex flex-wrap gap-3'>
+					<CreateProductDialog disabled={isPendingGetProducts} />
 				</div>
 
 				<DataTable
