@@ -1,4 +1,4 @@
-const { instance } = require('@/lib/axios')
+import { instance } from '@/lib/axios'
 
 const doctorService = {
 	getDoctors: async (params) =>

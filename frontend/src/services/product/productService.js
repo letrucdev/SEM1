@@ -1,50 +1,60 @@
-const { instance } = require('@/lib/axios')
+import { instance } from '@/lib/axios'
 
 const productService = {
-	getProducts: async (params) => await instance.get('/products', { params }),
+    getProducts: async (params) => await instance.get('/products', { params }),
 
-	getProductCategories: async () => await instance.get('/products/categories'),
+    getProductCategories: async () =>
+        await instance.get('/products/categories'),
 
-	createProduct: async (payload) => {
-		const formData = new FormData()
-		for (const key in payload) {
-			if (payload[key]) {
-				if ((typeof payload[key] === 'object', Array.isArray(payload[key]))) {
-					payload[key].forEach((item) => {
-						formData.append(`${key}[]`, item)
-					})
-				} else {
-					formData.append(key, payload[key])
-				}
-			}
-		}
+    createProductCategory: async (payload) =>
+        await instance.post('/products/category', payload),
 
-		return await instance.post('/products', formData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		})
-	},
+    createProduct: async (payload) => {
+        const formData = new FormData()
+        for (const key in payload) {
+            if (payload[key]) {
+                if (
+                    (typeof payload[key] === 'object',
+                    Array.isArray(payload[key]))
+                ) {
+                    payload[key].forEach((item) => {
+                        formData.append(`${key}[]`, item)
+                    })
+                } else {
+                    formData.append(key, payload[key])
+                }
+            }
+        }
 
-	updateProduct: async ({ productId, ...payload }) => {
-		const formData = new FormData()
-		for (const key in payload) {
-			if (payload[key]) {
-				if ((typeof payload[key] === 'object', Array.isArray(payload[key]))) {
-					payload[key].forEach((item) => {
-						formData.append(`${key}[]`, item)
-					})
-				} else {
-					formData.append(key, payload[key])
-				}
-			}
-		}
+        return await instance.post('/products', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        })
+    },
 
-		return await instance.post(`/products/${productId}`, formData, {
-			headers: { 'Content-Type': 'multipart/form-data' },
-		})
-	},
+    updateProduct: async ({ productId, ...payload }) => {
+        const formData = new FormData()
+        for (const key in payload) {
+            if (payload[key]) {
+                if (
+                    (typeof payload[key] === 'object',
+                    Array.isArray(payload[key]))
+                ) {
+                    payload[key].forEach((item) => {
+                        formData.append(`${key}[]`, item)
+                    })
+                } else {
+                    formData.append(key, payload[key])
+                }
+            }
+        }
 
-	deleteProduct: async (productId) =>
-		await instance.delete(`/products/${productId}`),
+        return await instance.post(`/products/${productId}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        })
+    },
+
+    deleteProduct: async (productId) =>
+        await instance.delete(`/products/${productId}`),
 }
 
 export { productService }

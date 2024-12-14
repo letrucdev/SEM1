@@ -17,11 +17,18 @@ class OrderController extends Controller
         try {
             $page = $request->query('page', 0);
             $pageSize = $request->query('pageSize', 10);
-            $oders = Order::offset($page * $pageSize)->limit($pageSize)
-                ->withSum('orderProducts as totalPrice', DB::raw('price * quantity'))
-                ->get();
+            $orders = Order::query();
 
-            return response()->json(['message' => 'Orders retrieved successfully', 'data' => $oders]);
+            $ordersCount = $orders->count();
+            $ordersWithIndex = $orders->offset($page * $pageSize)->limit($pageSize)
+                ->withSum('orderProducts as totalPrice', DB::raw('price * quantity'))
+                ->get()
+                ->map(function ($order, $index) use ($page, $pageSize) {
+                    $order->older = $page * $pageSize + $index + 1;
+                    return $order;
+                });
+
+            return response()->json(['message' => 'Orders retrieved successfully', 'count' => $ordersCount, 'data' => $ordersWithIndex]);
         } catch (\Exception) {
             return response()->json(['error' => 'An error occurred while retrieving the orders'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
