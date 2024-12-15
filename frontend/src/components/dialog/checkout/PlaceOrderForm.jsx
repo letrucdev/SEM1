@@ -38,9 +38,8 @@ export const PlaceOrderForm = forwardRef(
 			async (values) => {
 				try {
 					await createOrderMutateAsync({ cartId, products, ...values })
-					localStorage.removeItem(`checkout-${cartId}`)
 					onSuccess && onSuccess()
-					router.push(`/cart`)
+					router.push(`/orders`)
 				} catch (error) {
 					handleFormError(error, form)
 				}

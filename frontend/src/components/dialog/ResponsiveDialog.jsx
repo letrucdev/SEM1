@@ -23,25 +23,6 @@ import { forwardRef, useImperativeHandle, useState } from 'react'
 import { ScrollArea } from '../ui/scroll-area'
 import { useMediaQuery } from 'usehooks-ts'
 
-/* interface ResponsiveDialogProps {
-  open?: boolean
-  title: string
-  triggerElement: React.ReactNode
-  isPending?: boolean
-  content?: React.ReactNode | string
-  description?: string
-  onConfirm?: () => void
-  onOpenChange?: (open: boolean) => void
-  manualClose?: boolean
-  confirmButtonText?: string
-  cancelButtonText?: string
-  isShowFooter?: boolean
-} */
-
-/* export interface ResponsiveDialogRef {
-  close: () => void
-} */
-
 export const ResponsiveDialog = forwardRef(
 	(
 		{
