@@ -6,11 +6,13 @@ use App\Http\Controllers\CartController;
 Route::prefix('cart')->controller(CartController::class)->group(function () {
     Route::get('/', 'index');
 
-    Route::post('/{cart}', 'store');
+    Route::post('/', 'store');
 
-    Route::put('/{cart}/{product}', 'updateCartProduct');
+    Route::get('/products', 'getProductsInCart');
 
-    Route::delete('/{cart}', 'destroyCart');
+    Route::put('/{product}', 'updateCartProduct');
 
-    Route::delete('/{cart}/{product}', 'destroyCartProduct')->scopeBindings();
+    Route::delete('/', 'destroyCart');
+
+    Route::delete('/{product}', 'destroyCartProduct');
 });

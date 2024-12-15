@@ -24,13 +24,13 @@ class OrderController extends Controller
                 ->withSum('orderProducts as totalPrice', DB::raw('price * quantity'))
                 ->get()
                 ->map(function ($order, $index) use ($page, $pageSize) {
-                    $order->older = $page * $pageSize + $index + 1;
+                    $order->order = $page * $pageSize + $index + 1;
                     return $order;
                 });
 
             return response()->json(['message' => 'Orders retrieved successfully', 'count' => $ordersCount, 'data' => $ordersWithIndex]);
         } catch (\Exception) {
-            return response()->json(['error' => 'An error occurred while retrieving the orders'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => 'An error occurred while retrieving the orders'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -56,7 +56,8 @@ class OrderController extends Controller
 
                 if ($cartProduct->quantity > $detailProduct->stock) {
                     DB::rollBack();
-                    return response()->json(['error' => 'Not enough stock for product.', 'data' => $detailProduct], Response::HTTP_BAD_REQUEST);
+                    
+                    return response()->json(['message' => 'Not enough stock for product.', 'data' => $detailProduct], Response::HTTP_BAD_REQUEST);
                 }
 
                 $order->orderProducts()->create([
@@ -74,7 +75,7 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order created successfully', 'data' => $order]);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'An error occurred while creating the order'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => 'An error occurred while creating the order'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -98,7 +99,7 @@ class OrderController extends Controller
                 return response()->json(['message' => 'Order cancelled successfully', 'data' => $order->refresh()]);
             });
         } catch (\Exception) {
-            return response()->json(['error' => 'An error occurred while cancelling the order'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['message' => 'An error occurred while cancelling the order'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

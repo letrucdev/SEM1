@@ -33,7 +33,7 @@ instance.interceptors.response.use(
         if (error instanceof AxiosError && error.response) {
             if (error.response.status === HttpStatusCode.Unauthorized) {
                 localStorage.removeItem('user')
-                location.href = '/'
+                location.href = '/auth/sign-in'
             } else if (error.response.status !== HttpStatusCode.UnprocessableEntity) {
                 toast.error(error.message)
             }

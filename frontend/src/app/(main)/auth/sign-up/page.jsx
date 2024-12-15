@@ -171,7 +171,7 @@ export default function SignUpPage() {
 							name='password_confirmation'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Confrim password</FormLabel>
+									<FormLabel>Confirm password</FormLabel>
 									<FormControl>
 										<Input
 											type='password'

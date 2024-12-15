@@ -17,6 +17,7 @@ export function DataTable({
 	total,
 	handleSetPage,
 	handleSetPageSize,
+	isPaginated = true,
 }) {
 	return (
 		<div
@@ -72,7 +73,7 @@ export function DataTable({
 				</Table>
 			</div>
 
-			{!!rows?.length && (
+			{!!rows?.length && isPaginated && (
 				<TablePagination
 					pagination={pagination}
 					total={total}

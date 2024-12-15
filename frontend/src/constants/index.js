@@ -10,7 +10,7 @@ export const PAGE_SIZES = [5, 10, 20, 100]
 
 export const DEFAULT_PAGINATION = { page: 0, pageSize: 10 }
 
-export const MAX_DISPLAY_NUMBER = 999
+export const MAX_DISPLAY_NUMBER = 99
 
 /* React Query */
 export const QUERIES_STALE_TIME = minutesToMilliseconds(45)

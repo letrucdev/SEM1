@@ -17,14 +17,27 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '../ui/tooltip'
+import { useAddProductToCart } from '@/hooks/cart/useAddProductToCart'
 
 export const ProductCard = ({ product }) => {
+	const { addProductToCartMutate, isPendingAddProductToCart } =
+		useAddProductToCart()
+
+	const handleAddProductToCart = () => {
+		!isPendingAddProductToCart &&
+			addProductToCartMutate({
+				product_id: product.id,
+				quantity: 1,
+			})
+	}
+
 	return (
 		<Card className='hover:bg-primary-foreground hover:-translate-y-1 cursor-pointer transition-all flex flex-col overflow-hidden min-h-[365px]'>
 			<div className='flex w-full mb-4 min-h-44 max-h-44 overflow-hidden grow'>
 				<Image
-					width={500}
-					height={500}
+					width={283}
+					height={176}
+					quality={50}
 					src={makeImageUrlFromPath(product?.product_images?.[0]?.image_path)} // Replace with your actual image path
 					alt={product.name}
 					className='w-full h-full object-scale-down mt-auto'
@@ -73,7 +86,13 @@ export const ProductCard = ({ product }) => {
 					<TooltipProvider>
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button variant='outline' size='icon' className='size-9'>
+								<Button
+									variant='outline'
+									size='icon'
+									className='size-9'
+									disabled={!product.stock > 0}
+									onClick={handleAddProductToCart}
+								>
 									<ShoppingCart />
 								</Button>
 							</TooltipTrigger>
