@@ -159,3 +159,11 @@ body {
 		@apply bg-background text-foreground;
 	}
 }
+
+.swipper-thumbs .swiper-slide {
+	opacity: 0.4;
+}
+
+.swipper-thumbs .swiper-slide-thumb-active {
+	opacity: 1;
+}

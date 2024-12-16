@@ -21,6 +21,14 @@ import {
 	ShoppingBasket,
 } from 'lucide-react'
 import React, { useEffect } from 'react'
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 
 export default function ProductsPage() {
 	const [pagination, setPagination] = React.useState(DEFAULT_PAGINATION)
@@ -89,8 +97,20 @@ export default function ProductsPage() {
 	}, [searchInput])
 
 	return (
-		<div className='flex flex-col xl:flex-row justify-between py-12 container mx-auto gap-3 md:gap-8 px-6'>
+		<div className='flex flex-col xl:flex-row justify-between pt-6 pb-12 container mx-auto gap-3 md:gap-8 px-6'>
 			<div className='flex flex-col w-full gap-4'>
+				<Breadcrumb>
+					<BreadcrumbList>
+						<BreadcrumbItem>
+							<BreadcrumbLink href='/'>Home</BreadcrumbLink>
+						</BreadcrumbItem>
+						<BreadcrumbSeparator />
+						<BreadcrumbItem>
+							<BreadcrumbPage href='/products'>Products</BreadcrumbPage>
+						</BreadcrumbItem>
+					</BreadcrumbList>
+				</Breadcrumb>
+
 				<div className='flex flex-col mb-3'>
 					<h2 className='text-3xl md:text-5xl font-bold mb-4 text-balance'>
 						Products

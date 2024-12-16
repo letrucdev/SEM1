@@ -18,12 +18,17 @@ import {
 	TooltipTrigger,
 } from '../ui/tooltip'
 import { useAddProductToCart } from '@/hooks/cart/useAddProductToCart'
+import { useRouter } from 'next/navigation'
 
 export const ProductCard = ({ product }) => {
+	const router = useRouter()
+
 	const { addProductToCartMutate, isPendingAddProductToCart } =
 		useAddProductToCart()
 
-	const handleAddProductToCart = () => {
+	const handleAddProductToCart = (e) => {
+		e.stopPropagation()
+
 		!isPendingAddProductToCart &&
 			addProductToCartMutate({
 				product_id: product.id,
@@ -31,8 +36,15 @@ export const ProductCard = ({ product }) => {
 			})
 	}
 
+	const handleRouteToProduct = () => {
+		router.push(`/products/${product.id}`)
+	}
+
 	return (
-		<Card className='hover:bg-primary-foreground hover:-translate-y-1 cursor-pointer transition-all flex flex-col overflow-hidden min-h-[365px]'>
+		<Card
+			className='hover:bg-primary-foreground hover:-translate-y-1 cursor-pointer transition-all flex flex-col overflow-hidden min-h-[365px]'
+			onClick={handleRouteToProduct}
+		>
 			<div className='flex w-full mb-4 min-h-44 max-h-44 overflow-hidden grow'>
 				<Image
 					width={283}

@@ -30,7 +30,7 @@ export default function OrdersPage() {
 			{
 				key: 'product',
 				title: 'Product',
-				minWidth: 250,
+				minWidth: 150,
 			},
 			{
 				key: 'price',

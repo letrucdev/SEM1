@@ -3,6 +3,9 @@ import { instance } from '@/lib/axios'
 const productService = {
 	getProducts: async (params) => await instance.get('/products', { params }),
 
+	getProductDetail: async (productId) =>
+		await instance.get(`/products/${productId}`),
+
 	getProductCategories: async () => await instance.get('/products/categories'),
 
 	createProductCategory: async (payload) =>
@@ -45,6 +48,9 @@ const productService = {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		})
 	},
+
+	rateProduct: async ({ productId, star }) =>
+		await instance.post(`/products/${productId}/rate`, { star }),
 
 	deleteProduct: async (productId) =>
 		await instance.delete(`/products/${productId}`),

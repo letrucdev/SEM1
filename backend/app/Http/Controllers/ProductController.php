@@ -96,7 +96,10 @@ class ProductController extends Controller
     {
         return response()->json([
                 'message' => 'Product retrieved successfully',
-                'data' => $product->loadAvg('productRates', 'star')->load(['productImages', 'productCategory'])]
+                'data' => $product
+                    ->loadAvg('productRates', 'star')
+                    ->load(['productImages', 'productCategory'])
+                    ->loadCount('productRates')]
         );
     }
 
