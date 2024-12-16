@@ -44,7 +44,15 @@ export const PlaceOrderForm = forwardRef(
 					handleFormError(error, form)
 				}
 			},
-			[cartId, createOrderMutateAsync, form, handleFormError, onSuccess]
+			[
+				cartId,
+				createOrderMutateAsync,
+				form,
+				handleFormError,
+				onSuccess,
+				products,
+				router,
+			]
 		)
 
 		useImperativeHandle(
