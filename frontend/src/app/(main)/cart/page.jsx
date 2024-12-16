@@ -10,7 +10,6 @@ import { ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-/* import { DEFAULT_PAGINATION } from '@/constants' */
 
 export default function CartPage() {
 	const [isCheckAll, setIsCheckAll] = useState(false)
@@ -43,13 +42,16 @@ export default function CartPage() {
 		[isCheckedProduct]
 	)
 
-	const totalPrice = useMemo(() => {
-		return cartProducts
-			.filter((product) => checkedProduct.includes(product.id))
-			.reduce((total, product) => {
-				return total + product.pivot.quantity * product.price
-			}, 0)
-	}, [cartProducts, checkedProduct])
+	const totalPrice = useMemo(
+		() =>
+			cartProducts
+				.filter((product) => checkedProduct.includes(product.id))
+				.reduce(
+					(total, product) => total + product.pivot.quantity * product.price,
+					0
+				),
+		[cartProducts, checkedProduct]
+	)
 
 	const columns = useMemo(
 		() => [
@@ -136,7 +138,7 @@ export default function CartPage() {
 			checkedProduct.includes(product.id)
 		)
 		const checkOutId = Date.now()
-		localStorage.setItem(`checkout-${checkOutId}`, JSON.stringify(products))
+		sessionStorage.setItem(`checkout-${checkOutId}`, JSON.stringify(products))
 		router.push(`/checkout/${checkOutId}`)
 	}
 
@@ -164,10 +166,10 @@ export default function CartPage() {
 			<div className='flex flex-col w-full gap-4'>
 				<div className='flex flex-col mb-3'>
 					<h2 className='text-3xl md:text-5xl font-bold mb-4 text-balance'>
-						Your cart
+						My cart
 					</h2>
 					<div className='flex items-center'>
-						<p className='text-secondary-foreground text-sm md:text-lg'>
+						<p className='text-secondary-foreground text-sm md:text-lg font-bold'>
 							Total: {formatCurrency(totalPrice)}
 						</p>
 						<Button

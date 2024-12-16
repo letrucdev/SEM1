@@ -62,15 +62,19 @@ export default function CheckoutPage({ params: { id } }) {
 		[cartProducts]
 	)
 
-	const totalPrice = useMemo(() => {
-		return cartProducts.reduce((total, product) => {
-			return total + product.pivot.quantity * product.price
-		}, 0)
-	}, [cartProducts])
+	const totalPrice = useMemo(
+		() =>
+			cartProducts.reduce(
+				(total, product) => total + product.pivot.quantity * product.price,
+				0
+			),
+		[cartProducts]
+	)
 
 	useEffect(() => {
-		if (localStorage.getItem(`checkout-${id}`)) {
-			setCartProducts(JSON.parse(localStorage.getItem(`checkout-${id}`)))
+		const checkoutData = sessionStorage.getItem(`checkout-${id}`)
+		if (checkoutData) {
+			setCartProducts(JSON.parse(checkoutData))
 		} else {
 			location.href = '/'
 
@@ -87,16 +91,18 @@ export default function CheckoutPage({ params: { id } }) {
 					</h2>
 					<div className='flex items-center'>
 						<div className='flex flex-col mr-auto'>
-							<p className='text-secondary-foreground text-sm md:text-lg'>
+							<span className='text-secondary-foreground text-sm md:text-lg font-bold'>
 								Total: {formatCurrency(totalPrice)}
-							</p>
+							</span>
 						</div>
 
-						<PlaceOrderDialog
-							checkOutId={id}
-							cartId={cartProducts?.[0]?.pivot?.cart_id}
-							productIds={cartProducts.map((product) => product.id)}
-						/>
+						{!!cartProducts.length && (
+							<PlaceOrderDialog
+								checkOutId={id}
+								cartId={cartProducts[0]?.pivot?.cart_id}
+								productIds={cartProducts.map((product) => product.id)}
+							/>
+						)}
 					</div>
 				</div>
 

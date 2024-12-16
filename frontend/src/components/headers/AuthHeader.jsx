@@ -4,7 +4,7 @@ import { Button } from '../ui/button'
 import { useAuth } from '@/contexts/AuthProvider'
 import { UserAvatar } from './UserAvatar'
 import { ShoppingBasket } from 'lucide-react'
-import { formatBigNumber } from '@/lib/utils'
+import { cn, formatBigNumber } from '@/lib/utils'
 import { useGetCart } from '@/hooks/cart/useGetCart'
 export const AuthHeader = () => {
 	const { user } = useAuth()
@@ -27,11 +27,14 @@ export const AuthHeader = () => {
 					<Link href={'/cart'}>
 						<span className='flex relative mr-2'>
 							<ShoppingBasket size={24} />
-							{!!cart?.cart_products_count && (
-								<span className='min-w-3 h-3 z-10 bg-primary rounded-full flex items-center justify-center px-1 py-2 text-xs text-background -ml-2'>
-									{formatBigNumber(cart.cart_products_count)}
-								</span>
-							)}
+							<span
+								className={cn(
+									'min-w-3 h-3 z-10 bg-primary rounded-full flex items-center justify-center px-1 py-2 text-xs text-background -ml-2 invisible',
+									cart?.cart_products_count && 'visible'
+								)}
+							>
+								{formatBigNumber(cart?.cart_products_count || 0)}
+							</span>
 						</span>
 					</Link>
 					<UserAvatar user={user} />

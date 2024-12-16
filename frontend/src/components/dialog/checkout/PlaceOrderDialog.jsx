@@ -32,7 +32,8 @@ export const PlaceOrderDialog = ({
 	return (
 		<ResponsiveDialog
 			ref={dialogRef}
-			title={'Create Product Category'}
+			title={'Place Order'}
+			description={'Enter your delivery address to complete your order.'}
 			triggerElement={
 				<Button
 					disabled={disabled}

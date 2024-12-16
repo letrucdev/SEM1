@@ -13,9 +13,13 @@ class Order extends Model
 {
     use HasUuids;
 
+    /**
+     * @var float|int|mixed
+     */
+
     protected $fillable = ['order_status', 'delivery_address'];
 
-    protected $with = ['products'];
+    protected $with = ['products', 'products.productImages'];
 
     protected $casts = [
         'order_status' => OrderStatusCast::class

@@ -8,12 +8,18 @@ use App\Models\Order;
 use App\Models\OrderProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
+        $request->validate([
+            'page' => 'nullable|integer|min:0',
+            'pageSize' => 'nullable|integer|min:1|max:100',
+        ]);
+
         try {
             $page = $request->query('page', 0);
             $pageSize = $request->query('pageSize', 10);
@@ -28,7 +34,7 @@ class OrderController extends Controller
                     return $order;
                 });
 
-            return response()->json(['message' => 'Orders retrieved successfully', 'count' => $ordersCount, 'data' => $ordersWithIndex]);
+            return response()->json(['message' => 'Orders retrieved successfully', 'total' => $ordersCount, 'data' => $ordersWithIndex]);
         } catch (\Exception) {
             return response()->json(['message' => 'An error occurred while retrieving the orders'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -56,7 +62,7 @@ class OrderController extends Controller
 
                 if ($cartProduct->quantity > $detailProduct->stock) {
                     DB::rollBack();
-                    
+
                     return response()->json(['message' => 'Not enough stock for product.', 'data' => $detailProduct], Response::HTTP_BAD_REQUEST);
                 }
 
@@ -100,6 +106,55 @@ class OrderController extends Controller
             });
         } catch (\Exception) {
             return response()->json(['message' => 'An error occurred while cancelling the order'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getUserOrders(Request $request)
+    {
+        $request->validate([
+            'page' => 'nullable|integer|min:0',
+            'pageSize' => 'nullable|integer|min:1|max:100',
+        ]);
+
+        try {
+            $page = $request->query('page', 0);
+            $pageSize = $request->query('pageSize', 10);
+
+            $userOrders = Order::query();
+            $ordersCount = $userOrders->count();
+            $orders = $userOrders->limit($pageSize)->offset($page * $pageSize)->get();
+
+            return response()->json(['message' => 'User orders retrieved successfully', 'total' => $ordersCount, 'data' => $orders]);
+        } catch (\Exception) {
+            return response()->json(['message' => 'An error occurred while fetching user orders'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getOrderStatuses()
+    {
+        $orderStatuses = [];
+
+        foreach (OrderStatus::cases() as $value) {
+            $orderStatuses[$value->name] = $value->value;
+        }
+
+        return response()->json(['message' => 'Order statuses retrieved successfully', 'data' => $orderStatuses]);
+    }
+
+    public function updateOrderStatus(Order $order, Request $request)
+    {
+        $request->validate([
+            'order_status' => ['required', Rule::enum(OrderStatus::class)->except([OrderStatus::Cancelled])],
+        ]);
+
+        try {
+            $order->update([
+                'order_status' => $request->order_status,
+            ]);
+
+            return response()->json(['message' => 'Order status updated successfully', 'data' => $order->refresh()]);
+        } catch (\Exception) {
+            return response()->json(['message' => 'An error occurred while updating the order status'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

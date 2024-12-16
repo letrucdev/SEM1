@@ -12,6 +12,13 @@ export const DEFAULT_PAGINATION = { page: 0, pageSize: 10 }
 
 export const MAX_DISPLAY_NUMBER = 99
 
+export const ORDER_STATUS = {
+	Processing: 'Processing',
+	Delivering: 'Delivering',
+	Delivered: 'Delivered',
+	Cancelled: 'Cancelled',
+}
+
 /* React Query */
 export const QUERIES_STALE_TIME = minutesToMilliseconds(45)
 export const QUERIES_GC_TIME = minutesToMilliseconds(60)

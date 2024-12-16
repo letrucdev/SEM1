@@ -37,6 +37,7 @@ export const ResponsiveDialog = forwardRef(
 			manualClose,
 			confirmButtonText,
 			cancelButtonText,
+			disabled,
 			isShowFooter = true,
 		},
 		ref
@@ -75,9 +76,13 @@ export const ResponsiveDialog = forwardRef(
 		if (isDesktop) {
 			return (
 				<Dialog open={_open} onOpenChange={handleOpenChange}>
-					<DialogTrigger asChild>
-						<span>{triggerElement}</span>
-					</DialogTrigger>
+					{!disabled && (
+						<DialogTrigger asChild>
+							<span>{triggerElement}</span>
+						</DialogTrigger>
+					)}
+					{disabled && triggerElement}
+
 					<DialogContent>
 						<DialogHeader>
 							<DialogTitle className='text-balance'>{title}</DialogTitle>
@@ -110,9 +115,13 @@ export const ResponsiveDialog = forwardRef(
 
 		return (
 			<Drawer open={_open} onOpenChange={setOpen} noBodyStyles>
-				<DrawerTrigger asChild>
-					<span>{triggerElement}</span>
-				</DrawerTrigger>
+				{!disabled && (
+					<DrawerTrigger asChild>
+						<span>{triggerElement}</span>
+					</DrawerTrigger>
+				)}
+				{disabled && triggerElement}
+
 				<DrawerContent>
 					<DrawerHeader className='text-left'>
 						<DrawerTitle>{title}</DrawerTitle>

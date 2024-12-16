@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 		enabled: authStatus === AuthStatus.Authenticated,
 	})
 
-	const { logoutMutate } = useLogout()
+	const { logoutMutateAsync } = useLogout()
 
 	useEffect(() => {
 		const user = localStorage.getItem('user')
@@ -54,11 +54,10 @@ export const AuthProvider = ({ children }) => {
 		if (me) setUser(me)
 	}, [me])
 
-	const logout = () => {
+	const logout = async () => {
 		localStorage.removeItem('user')
-		logoutMutate()
-		setUser(null)
-		setAuthStatus(AuthStatus.Unauthenticated)
+		await logoutMutateAsync()
+		location.href = '/'
 	}
 
 	return (
