@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { LogoHeader } from '../headers/LogoHeader'
 
 export const MainFooter = () => {
@@ -20,19 +21,9 @@ export const MainFooter = () => {
 					<h3 className='text-lg font-semibold mb-4'>Support</h3>
 					<ul className='space-y-2'>
 						<li>
-							<a href='#' className='hover:underline'>
-								About
-							</a>
-						</li>
-						<li>
-							<a href='#' className='hover:underline'>
+							<Link href='/contact-us' className='hover:underline'>
 								Contact us
-							</a>
-						</li>
-						<li>
-							<a href='#' className='hover:underline'>
-								Help center
-							</a>
+							</Link>
 						</li>
 					</ul>
 				</div>
@@ -42,14 +33,14 @@ export const MainFooter = () => {
 					<h3 className='text-lg font-semibold mb-4'>Navigation</h3>
 					<ul className='space-y-2'>
 						<li>
-							<a href='#' className='hover:underline'>
-								Product
-							</a>
+							<Link href='/products' className='hover:underline'>
+								Products
+							</Link>
 						</li>
 						<li>
-							<a href='#' className='hover:underline'>
-								Research
-							</a>
+							<Link href='/dentists' className='hover:underline'>
+								Dentists
+							</Link>
 						</li>
 						<li>
 							<a href='#' className='hover:underline'>
@@ -125,7 +116,7 @@ export const MainFooter = () => {
 			</div>
 
 			<div className='border-t border-black mt-8 pt-4 text-center text-gray-400'>
-				© {new Date().getFullYear()} BELLEVILLE DENTAL.
+				© {new Date().getFullYear()} eProject SEM 1 / Group 2 / BELLEVILLE DENTAL.
 			</div>
 		</footer>
 	)

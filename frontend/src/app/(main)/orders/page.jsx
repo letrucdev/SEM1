@@ -30,7 +30,7 @@ export default function OrdersPage() {
 			{
 				key: 'product',
 				title: 'Product',
-				minWidth: 150,
+				minWidth: 250,
 			},
 			{
 				key: 'price',
@@ -94,7 +94,7 @@ export default function OrdersPage() {
 										width={128}
 										height={128}
 										alt={product.name}
-										className='w-16 h-16 object-cover rounded-md'
+										className='w-16 h-16 object-scale-down rounded-md'
 									/>
 									{product.name}
 								</span>

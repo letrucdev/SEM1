@@ -8,6 +8,7 @@ Route::prefix('products')->controller(ProductController::class)->group(function 
     Route::withoutMiddleware('auth:sanctum')->group(function () {
         Route::get('/', 'index');
         Route::get('/categories', 'getProductCategories');
+        Route::get('/{product}', 'show');
     });
 
     Route::middleware('ability:manage-product')->prefix('category')->group(function () {
@@ -18,8 +19,6 @@ Route::prefix('products')->controller(ProductController::class)->group(function 
         Route::delete('/{productCategory}', 'destroyProductCategory');
     });
 
-
-    Route::get('/{product}', 'show');
 
     Route::post('/{product}/rate', 'rateProduct');
 

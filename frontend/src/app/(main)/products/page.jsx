@@ -124,7 +124,8 @@ export default function ProductsPage() {
 						health today!
 					</p>
 				</div>
-				<div className='flex flex-wrap'>
+
+				<div className='flex flex-wrap gap-2'>
 					<div className='flex flex-wrap gap-2'>
 						{filterButtons.map((button) => (
 							<Button
@@ -168,7 +169,7 @@ export default function ProductsPage() {
 
 					<Input
 						placeholder='Enter product name to search'
-						className='w-96 ml-auto'
+						className='w-96 md:ml-auto'
 						value={searchInput}
 						onChange={handleChangeSearchInput}
 					/>

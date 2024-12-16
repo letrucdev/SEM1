@@ -117,7 +117,7 @@ export default function ProductDetailPage({ params: { id } }) {
 											>
 												{product.product_images?.map((image) => (
 													<SwiperSlide key={image.id}>
-														<div className='w-full aspect-square p-12'>
+														<div className='w-full aspect-square p-12 select-none'>
 															<Image
 																priority
 																className='w-full h-full object-scale-down'
@@ -146,11 +146,11 @@ export default function ProductDetailPage({ params: { id } }) {
 												slidesPerView={4}
 												watchSlidesProgress={true}
 												modules={[Thumbs]}
-												className='swipper-thumbs lg:w-[500px] h-full'
+												className='swipper-thumbs w-full h-full shrink-0'
 											>
 												{product?.product_images?.map((image) => (
 													<SwiperSlide key={image.id}>
-														<div className='w-full aspect-square'>
+														<div className='w-full aspect-square bg-muted p-2 select-none rounded-md'>
 															<Image
 																priority
 																className='w-full h-full object-scale-down'

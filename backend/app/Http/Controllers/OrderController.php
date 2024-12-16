@@ -27,6 +27,7 @@ class OrderController extends Controller
 
             $ordersCount = $orders->count();
             $ordersWithIndex = $orders->offset($page * $pageSize)->limit($pageSize)
+                ->orderBy('created_at', 'desc')
                 ->withSum('orderProducts as totalPrice', DB::raw('price * quantity'))
                 ->get()
                 ->map(function ($order, $index) use ($page, $pageSize) {
