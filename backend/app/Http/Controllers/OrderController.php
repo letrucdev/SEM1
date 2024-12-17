@@ -155,7 +155,7 @@ class OrderController extends Controller
     public function updateOrderStatus(string $orderId, Request $request)
     {
         $request->validate([
-            'order_status' => ['required', Rule::enum(OrderStatus::class)->except([OrderStatus::Cancelled])],
+            'order_status' => ['required', Rule::enum(OrderStatus::class)],
         ]);
 
         try {

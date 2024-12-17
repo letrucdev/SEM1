@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
 	BriefcaseMedical,
+	GraduationCap,
 	Lock,
 	LogOut,
 	Package,
@@ -38,24 +39,29 @@ export const UserAvatar = ({
 		role: {
 			Admin: [
 				{
-					title: 'Manage users',
+					title: 'Manage Users',
 					href: '/manage-users',
 					icon: <UsersIcon />,
 				},
 				{
-					title: 'Manage dentists',
+					title: 'Manage Dentists',
 					href: '/manage-dentists',
 					icon: <BriefcaseMedical />,
 				},
 				{
-					title: 'Manage tickets',
+					title: 'Manage Tickets',
 					href: '/manage-tickets',
 					icon: <ReceiptText />,
 				},
 				{
-					title: 'Manage products',
+					title: 'Manage Products',
 					href: '/manage-products',
 					icon: <Package />,
+				},
+				{
+					title: 'Manage Courses',
+					href: '/manage-courses',
+					icon: <GraduationCap />,
 				},
 			],
 		},

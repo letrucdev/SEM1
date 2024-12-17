@@ -1,0 +1,43 @@
+services:
+  eproject-backend:
+    build:
+      args:
+        user: neon
+        uid: 1000
+      context: backend
+      dockerfile: Dockerfile
+    image: eproject-backend
+    container_name: eproject-backend
+    restart: unless-stopped
+    working_dir: /var/www/eproject-backend
+    volumes:
+      - eproject-backend:/var/www/eproject-backend
+      - eproject-backend-public:/var/www/eproject-backend/public
+
+  eproject-frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_ROOT_DOMAIN=${NEXT_PUBLIC_API_ROOT_DOMAIN:-http://localhost:8000/api}
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    image: eproject-frontend
+    container_name: eproject-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-webserver
+    restart: unless-stopped
+    ports:
+      - "8383:8383" # Cổng cho backend
+    volumes:
+      - eproject-backend:/var/www/eproject-backend
+      - ./nginx:/etc/nginx/conf.d
+
+volumes:
+  eproject-backend:
+  eproject-backend-public:

@@ -27,7 +27,7 @@ export const formatDateTime = (dateString, time = false) => {
 }
 
 export const makeImageUrlFromPath = (path) => {
-	return path ? `${config.apiUrl.replace('/api', '/storage')}/${path}` : ''
+	return path ? `${config.rootApiDomain}/storage/${path}` : ''
 }
 
 export const formatCurrency = (amount, currency = 'USD') => {

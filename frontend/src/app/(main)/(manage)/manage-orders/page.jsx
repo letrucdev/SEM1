@@ -154,11 +154,7 @@ export default function ManageOrdersPage() {
 														{ORDER_STATUS.Delivered}
 													</SelectItem> */}
 													{Object.keys(orderStatuses).map((status) => (
-														<SelectItem
-															value={status}
-															key={status}
-															disabled={status === ORDER_STATUS.Cancelled}
-														>
+														<SelectItem value={status} key={status}>
 															{status}
 														</SelectItem>
 													))}
