@@ -19,7 +19,7 @@ services:
       context: frontend
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_ROOT_DOMAIN=${NEXT_PUBLIC_API_ROOT_DOMAIN:-http://localhost:8000/api}
+        - NEXT_PUBLIC_API_ROOT_DOMAIN=${NEXT_PUBLIC_API_ROOT_DOMAIN:-https://api.eproject.neondev.app}
     environment:
       TZ: Asia/Ho_Chi_Minh
     image: eproject-frontend
