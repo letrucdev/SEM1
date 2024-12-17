@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import blogBanner3 from '@/public/blog3.jpg'
+/* import blogBanner3 from '@/public/blog3.jpg' */
 import { useGetDoctors } from '@/hooks/doctor/useGetDoctors'
 import { DentistCard } from '@/components/cards/DentistCard'
 import { getDoctorDefaultParams } from '@/hooks/doctor/useGetDoctors'
@@ -44,8 +44,10 @@ export default function DentistsPage() {
 						</div>
 					</div>
 					<Image
-						src={blogBanner3}
+						src={'/blog3.jpg'}
 						alt='Banner Home'
+						width={1080}
+						height={720}
 						className='w-full h-full object-cover absolute'
 						priority
 					/>

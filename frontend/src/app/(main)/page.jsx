@@ -1,9 +1,9 @@
 'use client'
 import Image from 'next/image'
-import banner1 from '../../public/banner1.png'
-import banner2 from '../../public/banner2.png'
-import serviceBanner from '../../public/service.jpg'
-import dentistGroup from '../../public/dentist_group.jpg'
+/* import banner1 from '../../public/banner1.png' */
+/* import banner2 from '../../public/banner2.png' */
+/* import serviceBanner from '../../public/service.jpg' */
+/* import dentistGroup from '../../public/dentist_group.jpg' */
 import { Button } from '@/components/ui/button'
 import {
 	Card,
@@ -36,7 +36,9 @@ export default function HomePage() {
 						</div>
 					</div>
 					<Image
-						src={banner1} // Replace with your actual image path
+						src={'/banner1.png'} // Replace with your actual image path
+						width={1080}
+						height={380}
 						alt='Banner Home'
 						className='w-full h-full object-cover absolute'
 						priority
@@ -62,8 +64,10 @@ export default function HomePage() {
 				{/* Right Section */}
 				<div className='rounded-lg basis-1/2 shrink-0 h-full'>
 					<Image
-						src={banner2} // Replace with your actual image path
+						src={'/banner2.png'} // Replace with your actual image path
 						alt='Dental Office'
+						width={480}
+						height={287}
 						className='rounded-md w-full object-cover shrink-0'
 					/>
 				</div>
@@ -83,8 +87,10 @@ export default function HomePage() {
 					{/* Image Section */}
 					<div className='basis-full xl:basis-1/2 h-full xl:block hidden shrink-0'>
 						<Image
-							src={serviceBanner} // Replace with your actual image path
+							src={'/service.jpg'} // Replace with your actual image path
 							alt='Dental Patient'
+							width={620}
+							height={427}
 							className='rounded-lg shadow-md h-full object-cover w-full'
 						/>
 					</div>
@@ -162,8 +168,10 @@ export default function HomePage() {
 				{/* Right Section */}
 				<div className='xl:w-1/2'>
 					<Image
-						src={dentistGroup} // Replace with your actual image path
+						src={'/dentist_group.jpg'} // Replace with your actual image path
 						alt='Dental Patient'
+						width={1080}
+						height={675}
 						className='rounded-lg shadow-md'
 					/>
 				</div>
