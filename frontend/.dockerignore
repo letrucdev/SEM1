@@ -1,13 +1,13 @@
 
 **/node_modules/
-**/.next
+**/_next
 =======
 Dockerfile
 .dockerignore
 node_modules
 npm-debug.log
 README.md
-.next
+_next
 .git
 
 # local env files
