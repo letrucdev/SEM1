@@ -2,6 +2,7 @@ import { instance } from '@/lib/axios'
 
 const courseService = {
 	getCourses: async (params) => await instance.get('/courses', { params }),
+
 	createCourse: async (payload) => {
 		const formData = new FormData()
 		for (const key in payload) {
@@ -12,6 +13,7 @@ const courseService = {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		})
 	},
+
 	updateCourse: async ({ courseId, ...payload }) => {
 		const formData = new FormData()
 		for (const key in payload) {
@@ -22,6 +24,7 @@ const courseService = {
 			headers: { 'Content-Type': 'multipart/form-data' },
 		})
 	},
+
 	deleteCourse: async (courseId) =>
 		await instance.delete(`/courses/${courseId}`),
 

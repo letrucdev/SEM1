@@ -237,7 +237,11 @@ export default function ProductDetailPage({ params: { id } }) {
 										<div className='flex mt-6'>
 											<Button
 												onClick={handleAddProductToCart}
-												disabled={isPendingAddProductToCart || !quantity}
+												disabled={
+													isPendingAddProductToCart ||
+													!quantity ||
+													!product.stock
+												}
 											>
 												<ShoppingCart /> Add To Cart
 											</Button>

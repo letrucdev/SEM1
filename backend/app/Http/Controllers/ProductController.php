@@ -307,7 +307,7 @@ class ProductController extends Controller
             ]);
         } catch (\Exception) {
             return response()->json([
-                'error' => 'An error occurred while rating the product',
+                'error' => 'An error occurred while rating the product'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
