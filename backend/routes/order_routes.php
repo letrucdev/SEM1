@@ -13,5 +13,5 @@ Route::prefix('orders')->controller(OrderController::class)->group(function () {
 
     Route::patch('/cancel/{order}', 'cancelOrder');
 
-    Route::patch('/{order}/status', 'updateOrderStatus');
+    Route::patch('/{orderId}/status', 'updateOrderStatus');
 });

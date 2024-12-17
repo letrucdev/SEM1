@@ -1,27 +1,38 @@
 'use client'
-
-import { CancelOrderDialog } from '@/components/dialog/order/CancelOrderDialog'
-import { DataTable } from '@/components/table/DataTable'
 import { TablePagination } from '@/components/table/Pagination'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { DEFAULT_PAGINATION, ORDER_STATUS } from '@/constants'
-import { useGetOrders } from '@/hooks/order/useGetOrders'
+import { useGetUsersOrders } from '@/hooks/order/useGetUsersOrders'
+import { useMemo, useState } from 'react'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { DataTable } from '@/components/table/DataTable'
+import Image from 'next/image'
 import {
-	cn,
 	formatCurrency,
 	formatDateTime,
 	makeImageUrlFromPath,
 } from '@/lib/utils'
-import Image from 'next/image'
-import { useMemo, useState } from 'react'
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select'
+import { useGetOrderStatuses } from '@/hooks/order/useGetOrderStatuses'
+import { useUpdateOrderStatus } from '@/hooks/order/useUpdateOrderStatus'
 
-export default function OrdersPage() {
+export default function ManageOrdersPage() {
 	const [pagination, setPagination] = useState(DEFAULT_PAGINATION)
 
-	const { orders, orderTotal, isPendingGetOrders } = useGetOrders({
+	const { orders, orderTotal, isPendingGetUsersOrders } = useGetUsersOrders({
 		...pagination,
 	})
+
+	const { orderStatuses, isPendingGetOrderStatuses } = useGetOrderStatuses()
+
+	const { updateOrderStatusMutate, isPendingUpdateOrderStatus } =
+		useUpdateOrderStatus()
 
 	const columns = useMemo(
 		() => [
@@ -57,16 +68,14 @@ export default function OrdersPage() {
 		setPagination((prev) => ({ ...prev, pageSize }))
 	}
 
+	const handleChangeOrderStatus = ({ orderId, status }) => {
+		updateOrderStatusMutate({ orderId, status })
+	}
+
 	return (
 		<div className='flex flex-col xl:flex-row justify-between py-12 container mx-auto gap-3 md:gap-8 px-6'>
 			<div className='flex flex-col w-full gap-4'>
-				<div className='flex flex-col mb-3'>
-					<h2 className='text-3xl md:text-5xl font-bold mb-4 text-balance'>
-						My Orders
-					</h2>
-				</div>
-
-				{isPendingGetOrders && !orders.length && (
+				{isPendingGetUsersOrders && !orders.length && (
 					<>
 						<Skeleton className={`w-full h-60`} />
 						<Skeleton className={`w-full h-60`} />
@@ -74,11 +83,11 @@ export default function OrdersPage() {
 					</>
 				)}
 
-				{!isPendingGetOrders && !orders.length && (
+				{!isPendingGetUsersOrders && !orders.length && (
 					<span className='text-center'>No data.</span>
 				)}
 
-				{!isPendingGetOrders &&
+				{!isPendingGetUsersOrders &&
 					!!orders.length &&
 					orders.map((order) => {
 						const rows = order.products.map((product) => ({
@@ -87,7 +96,7 @@ export default function OrdersPage() {
 								<span className='flex gap-4 items-center'>
 									<Image
 										src={makeImageUrlFromPath(
-											product.product_images[0].image_path
+											product.product_images?.[0].image_path
 										)}
 										width={128}
 										height={128}
@@ -117,25 +126,46 @@ export default function OrdersPage() {
 									</div>
 
 									<div className='flex flex-col items-end'>
-										<div className='flex gap-1'>
-											Status:
-											<p
-												className={cn(
-													order.order_status === ORDER_STATUS.Cancelled &&
-														'text-destructive',
-													order.order_status === ORDER_STATUS.Processing &&
-														'text-amber-500',
-													order.order_status === ORDER_STATUS.Delivering &&
-														'text-primary',
-													order.order_status === ORDER_STATUS.Delivered &&
-														'text-green-500'
-												)}
+										<div className='flex items-center gap-2'>
+											<Select
+												disabled={
+													isPendingGetOrderStatuses ||
+													isPendingUpdateOrderStatus
+												}
+												defaultValue={order.order_status}
+												onValueChange={(value) =>
+													handleChangeOrderStatus({
+														orderId: order.id,
+														status: orderStatuses[value],
+													})
+												}
 											>
-												{order.order_status}
-											</p>
+												<SelectTrigger className='w-[180px]'>
+													<SelectValue />
+												</SelectTrigger>
+												<SelectContent>
+													{/* <SelectItem value={ORDER_STATUS.Processing}>
+														{ORDER_STATUS.Processing}
+													</SelectItem>
+													<SelectItem value={ORDER_STATUS.Delivering}>
+														{ORDER_STATUS.Delivering}
+													</SelectItem>
+													<SelectItem value={ORDER_STATUS.Delivered}>
+														{ORDER_STATUS.Delivered}
+													</SelectItem> */}
+													{Object.keys(orderStatuses).map((status) => (
+														<SelectItem
+															value={status}
+															key={status}
+															disabled={status === ORDER_STATUS.Cancelled}
+														>
+															{status}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
 										</div>
-										{/* <p>Order date: {formatDateTime(order.created_at, true)}</p> */}
-										<span className='font-bold'>
+										<span className='font-bold mt-2'>
 											Total: {formatCurrency(order.totalPrice)}
 										</span>
 									</div>
@@ -147,20 +177,20 @@ export default function OrdersPage() {
 										rows={rows}
 										isPaginated={false}
 									/>
-									<div className='flex pt-4'>
+									{/* <div className='flex pt-4'>
 										<span className='ml-auto'>
 											<CancelOrderDialog
 												orderId={order.id}
 												orderStatus={order.order_status}
 											/>
 										</span>
-									</div>
+									</div> */}
 								</CardContent>
 							</Card>
 						)
 					})}
 
-				{!isPendingGetOrders && !!orders.length && (
+				{!isPendingGetUsersOrders && !!orders.length && (
 					<TablePagination
 						onChangePage={handleChangePage}
 						onChangePageSize={handleChangePageSize}

@@ -26,15 +26,16 @@ class CourseController extends Controller
         $search = $request->query('search');
 
         try {
-            $courses = Course::offset($page * $pageSize)->limit($pageSize)
+            $courses = Course::query()
                 ->when($search, function (Builder $query, string $search) {
                     $query
                         ->where('title', 'LIKE', '%' . $search . '%')
                         ->orWhere('description', 'LIKE', '%' . $search . '%');
-                })
-                ->get();
+                });
 
-            return response()->json(['message' => 'Courses retrieved successfully', 'data' => $courses]);
+            $coursesCount = $courses->count();
+
+            return response()->json(['message' => 'Courses retrieved successfully', 'total' => $coursesCount, 'data' => $courses->get()]);
         } catch (\Exception) {
             return response()->json(['error' => 'An error occurred while retrieving the courses'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -108,7 +109,7 @@ class CourseController extends Controller
                 'message' => 'Course updated successfully',
                 'data' => $course->refresh()
             ]);
-        } catch (\Exception) {
+        } catch (\Throwable) {
             DB::rollBack();
             return response()->json(['error' => 'An error occurred while updating the course'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

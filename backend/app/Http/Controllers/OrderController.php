@@ -23,7 +23,7 @@ class OrderController extends Controller
         try {
             $page = $request->query('page', 0);
             $pageSize = $request->query('pageSize', 10);
-            $orders = Order::query();
+            $orders = \Auth::user()->orders();
 
             $ordersCount = $orders->count();
             $ordersWithIndex = $orders->offset($page * $pageSize)->limit($pageSize)
@@ -123,9 +123,19 @@ class OrderController extends Controller
 
             $userOrders = Order::query();
             $ordersCount = $userOrders->count();
-            $orders = $userOrders->limit($pageSize)->offset($page * $pageSize)->get();
 
-            return response()->json(['message' => 'User orders retrieved successfully', 'total' => $ordersCount, 'data' => $orders]);
+            $ordersWithIndex = $userOrders
+                ->withSum('orderProducts as totalPrice', DB::raw('price * quantity'))
+                ->whereNotIn('order_status', [OrderStatus::Cancelled, OrderStatus::Delivered])
+                ->limit($pageSize)->offset($page * $pageSize)
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($order, $index) use ($page, $pageSize) {
+                    $order->order = $page * $pageSize + $index + 1;
+                    return $order;
+                });
+
+            return response()->json(['message' => 'User orders retrieved successfully', 'total' => $ordersCount, 'data' => $ordersWithIndex]);
         } catch (\Exception) {
             return response()->json(['message' => 'An error occurred while fetching user orders'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -142,13 +152,15 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order statuses retrieved successfully', 'data' => $orderStatuses]);
     }
 
-    public function updateOrderStatus(Order $order, Request $request)
+    public function updateOrderStatus(string $orderId, Request $request)
     {
         $request->validate([
             'order_status' => ['required', Rule::enum(OrderStatus::class)->except([OrderStatus::Cancelled])],
         ]);
 
         try {
+            $order = Order::findOrFail($orderId);
+
             $order->update([
                 'order_status' => $request->order_status,
             ]);
