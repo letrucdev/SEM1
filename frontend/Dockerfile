@@ -31,6 +31,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV NEXT_PUBLIC_API_ROOT_DOMAIN=${NEXT_PUBLIC_API_ROOT_DOMAIN}
 
 
 RUN addgroup --system --gid 1001 nodejs
