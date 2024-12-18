@@ -1,4 +1,5 @@
-FROM php:8.2-fpm
+#FROM php:8.2-fpm
+FROM bitnami/php-fpm:latest
 
 ARG user
 ARG uid
