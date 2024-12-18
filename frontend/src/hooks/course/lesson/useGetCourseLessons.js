@@ -1,10 +1,10 @@
 import { courseService } from '@/services/course/courseService'
 import { useQuery } from '@tanstack/react-query'
 
-export const useGetCourseLessons = () => {
+export const useGetCourseLessons = ({ courseId }) => {
 	const { data, isPending, refetch } = useQuery({
-		queryKey: ['courseLessons'],
-		queryFn: () => courseService.getCourseLessons(),
+		queryKey: ['courseLessons', courseId],
+		queryFn: () => courseService.getCourseLessons(courseId),
 	})
 
 	const courseLessons = data?.data?.data || []

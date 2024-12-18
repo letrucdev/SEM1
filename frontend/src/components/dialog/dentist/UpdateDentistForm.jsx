@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input'
 import { useHandleFormError } from '@/hooks/form/useHandleFormError'
 import { Card } from '@/components/ui/card'
 import { useUpdateDoctor } from '@/hooks/doctor/useUpdateDoctor'
-import { formatDateForm, makeImageUrlFromPath } from '@/lib/utils'
+import { formatDateForm, makeResourcePublicUrlFromPath } from '@/lib/utils'
 
 /* export interface AddPromoFormRef {
   submit: () => void
@@ -116,7 +116,7 @@ export const UpdateDentistForm = forwardRef(({ onSuccess, doctor }, ref) => {
 
 	useEffect(() => {
 		if (doctor.avatar_path) {
-			setAvatarPreview(makeImageUrlFromPath(doctor.avatar_path))
+			setAvatarPreview(makeResourcePublicUrlFromPath(doctor.avatar_path))
 		}
 	}, [doctor.avatar_path])
 

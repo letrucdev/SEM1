@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useAddProductToCart } from '@/hooks/cart/useAddProductToCart'
 import { useGetProductDetail } from '@/hooks/product/useGetProductDetail'
 import { useRateProduct } from '@/hooks/product/useRateProduct'
-import { formatCurrency, makeImageUrlFromPath } from '@/lib/utils'
+import { formatCurrency, makeResourcePublicUrlFromPath } from '@/lib/utils'
 import { ShoppingCart } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { Rating } from 'react-simple-star-rating'
@@ -124,7 +124,7 @@ export default function ProductDetailPage({ params: { id } }) {
 																alt={product.name}
 																width={512}
 																height={512}
-																src={makeImageUrlFromPath(image.image_path)}
+																src={makeResourcePublicUrlFromPath(image.image_path)}
 															/>
 														</div>
 													</SwiperSlide>
@@ -157,7 +157,7 @@ export default function ProductDetailPage({ params: { id } }) {
 																alt={product.name}
 																width={512}
 																height={512}
-																src={makeImageUrlFromPath(image.image_path)}
+																src={makeResourcePublicUrlFromPath(image.image_path)}
 															/>
 														</div>
 													</SwiperSlide>

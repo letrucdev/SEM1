@@ -5,7 +5,7 @@ import { DataTable } from '@/components/table/DataTable'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useGetCartProducts } from '@/hooks/cart/useGetCartProducts'
-import { formatCurrency, makeImageUrlFromPath } from '@/lib/utils'
+import { formatCurrency, makeResourcePublicUrlFromPath } from '@/lib/utils'
 import { ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -111,7 +111,7 @@ export default function CartPage() {
 							<Image
 								width={128}
 								height={128}
-								src={makeImageUrlFromPath(
+								src={makeResourcePublicUrlFromPath(
 									cartProduct.product_images?.[0]?.image_path
 								)}
 								alt={cartProduct.name}

@@ -2,7 +2,7 @@
 import { DataTable } from '@/components/table/DataTable'
 import { DEFAULT_PAGINATION } from '@/constants'
 import { useGetProducts } from '@/hooks/product/useGetProducts'
-import { formatCurrency, formatDateTime, makeImageUrlFromPath } from '@/lib/utils'
+import { formatCurrency, formatDateTime, makeResourcePublicUrlFromPath } from '@/lib/utils'
 import { useEffect, useMemo, useState } from 'react'
 import {
 	ArrowDownWideNarrow,
@@ -108,7 +108,7 @@ export default function ManageProductsPage() {
 							<Image
 								width={128}
 								height={128}
-								src={makeImageUrlFromPath(
+								src={makeResourcePublicUrlFromPath(
 									product.product_images?.[0]?.image_path
 								)}
 								alt={product.name}

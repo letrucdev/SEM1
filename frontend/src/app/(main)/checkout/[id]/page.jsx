@@ -1,7 +1,7 @@
 'use client'
 import { PlaceOrderDialog } from '@/components/dialog/checkout/PlaceOrderDialog'
 import { DataTable } from '@/components/table/DataTable'
-import { formatCurrency, makeImageUrlFromPath } from '@/lib/utils'
+import { formatCurrency, makeResourcePublicUrlFromPath } from '@/lib/utils'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -45,7 +45,7 @@ export default function CheckoutPage({ params: { id } }) {
 							<Image
 								width={128}
 								height={128}
-								src={makeImageUrlFromPath(
+								src={makeResourcePublicUrlFromPath(
 									cartProduct.product_images?.[0]?.image_path
 								)}
 								alt={cartProduct.name}

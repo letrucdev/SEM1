@@ -10,7 +10,7 @@ import Image from 'next/image'
 import {
 	formatCurrency,
 	formatDateTime,
-	makeImageUrlFromPath,
+	makeResourcePublicUrlFromPath,
 } from '@/lib/utils'
 import {
 	Select,
@@ -95,7 +95,7 @@ export default function ManageOrdersPage() {
 							product: (
 								<span className='flex gap-4 items-center'>
 									<Image
-										src={makeImageUrlFromPath(
+										src={makeResourcePublicUrlFromPath(
 											product.product_images?.[0].image_path
 										)}
 										width={128}

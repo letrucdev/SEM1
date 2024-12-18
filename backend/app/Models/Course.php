@@ -17,6 +17,8 @@ class Course extends Model
         'thumbnail_path'
     ];
 
+    protected $hidden = ['user_id'];
+
 
     public function user(): BelongsTo
     {

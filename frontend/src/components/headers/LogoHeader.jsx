@@ -10,7 +10,14 @@ export const LogoHeader = ({ className, ...props }) => {
 			className={twMerge`flex items-center max-w-36 gap-2 text-black ${className}`}
 			{...props}
 		>
-			<Image alt='logo' title='Logo' src={'/logo.svg'} priority width={36} height={36} />
+			<Image
+				alt='logo'
+				title='Logo'
+				src={'/logo.svg'}
+				width={39}
+				height={40}
+				priority
+			/>
 			<p
 				className='uppercase leading-5 font-bold'
 				aria-label='Belleville Dental'

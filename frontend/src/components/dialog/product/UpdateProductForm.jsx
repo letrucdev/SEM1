@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/select'
 import { useGetProductCategories } from '@/hooks/product/useGetProductCategories'
 import { useUpdateProduct } from '@/hooks/product/useUpdateProduct'
-import { makeImageUrlFromPath } from '@/lib/utils'
+import { makeResourcePublicUrlFromPath } from '@/lib/utils'
 import { ProductPreviewImage } from './CreateProductForm'
 import { Button } from '@/components/ui/button'
 import { ImageUp } from 'lucide-react'
@@ -165,7 +165,7 @@ export const UpdateProductForm = forwardRef(({ onSuccess, product }, ref) => {
 				product.product_images.map((image) => {
 					return {
 						...image,
-						image_path: makeImageUrlFromPath(image.image_path),
+						image_path: makeResourcePublicUrlFromPath(image.image_path),
 					}
 				})
 			)

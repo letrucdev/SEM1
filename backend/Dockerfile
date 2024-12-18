@@ -50,6 +50,7 @@ USER $user
 
 #Generate key
 RUN php artisan key:generate
+RUN php artisan storage:link
 RUN php artisan optimize
 
 

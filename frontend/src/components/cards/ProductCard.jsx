@@ -6,7 +6,7 @@ import {
 	CardContent,
 } from '@/components/ui/card'
 import Image from 'next/image'
-import { cn, formatCurrency, makeImageUrlFromPath } from '@/lib/utils'
+import { cn, formatCurrency, makeResourcePublicUrlFromPath } from '@/lib/utils'
 import { Rating } from 'react-simple-star-rating'
 import React from 'react'
 import { ArchiveX, Check, ShoppingCart } from 'lucide-react'
@@ -50,7 +50,7 @@ export const ProductCard = ({ product }) => {
 					width={283}
 					height={176}
 					quality={50}
-					src={makeImageUrlFromPath(product?.product_images?.[0]?.image_path)} // Replace with your actual image path
+					src={makeResourcePublicUrlFromPath(product?.product_images?.[0]?.image_path)} // Replace with your actual image path
 					alt={product.name}
 					className='w-full h-full object-scale-down mt-auto'
 				/>

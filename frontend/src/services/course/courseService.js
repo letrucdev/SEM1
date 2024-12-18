@@ -3,6 +3,9 @@ import { instance } from '@/lib/axios'
 const courseService = {
 	getCourses: async (params) => await instance.get('/courses', { params }),
 
+	getCourseDetail: async (courseId) =>
+		await instance.get(`/courses/${courseId}`),
+
 	createCourse: async (payload) => {
 		const formData = new FormData()
 		for (const key in payload) {
@@ -30,6 +33,9 @@ const courseService = {
 
 	getCourseLessons: async (courseId) =>
 		await instance.get(`/courses/${courseId}/lessons`),
+
+	getCourseLessonDetail: async (courseId, lessonId) =>
+		await instance.get(`/courses/${courseId}/lessons/${lessonId}`),
 
 	createCourseLesson: async ({ courseId, ...payload }) => {
 		const formData = new FormData()

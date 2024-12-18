@@ -11,7 +11,7 @@ import {
 	cn,
 	formatCurrency,
 	formatDateTime,
-	makeImageUrlFromPath,
+	makeResourcePublicUrlFromPath,
 } from '@/lib/utils'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
@@ -86,7 +86,7 @@ export default function OrdersPage() {
 							product: (
 								<span className='flex gap-4 items-center'>
 									<Image
-										src={makeImageUrlFromPath(
+										src={makeResourcePublicUrlFromPath(
 											product.product_images[0].image_path
 										)}
 										width={128}

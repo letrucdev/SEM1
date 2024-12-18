@@ -4,7 +4,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card'
-import { makeImageUrlFromPath } from '@/lib/utils'
+import { makeResourcePublicUrlFromPath } from '@/lib/utils'
 import Image from 'next/image'
 
 export const DentistCard = ({ dentist }) => {
@@ -15,7 +15,7 @@ export const DentistCard = ({ dentist }) => {
 					<Image
 						width={540}
 						height={580}
-						src={makeImageUrlFromPath(dentist.avatar_path)} // Replace with your actual image path
+						src={makeResourcePublicUrlFromPath(dentist.avatar_path)} // Replace with your actual image path
 						alt='About Dental'
 						className='w-full h-full object-cover mt-auto'
 					/>

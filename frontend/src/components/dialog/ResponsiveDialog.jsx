@@ -38,6 +38,7 @@ export const ResponsiveDialog = forwardRef(
 			confirmButtonText,
 			cancelButtonText,
 			disabled,
+			contentClassName,
 			isShowFooter = true,
 		},
 		ref
@@ -83,7 +84,7 @@ export const ResponsiveDialog = forwardRef(
 					)}
 					{disabled && triggerElement}
 
-					<DialogContent>
+					<DialogContent className={contentClassName}>
 						<DialogHeader>
 							<DialogTitle className='text-balance'>{title}</DialogTitle>
 							<DialogDescription>{_description}</DialogDescription>
@@ -122,7 +123,7 @@ export const ResponsiveDialog = forwardRef(
 				)}
 				{disabled && triggerElement}
 
-				<DrawerContent>
+				<DrawerContent className={contentClassName}>
 					<DrawerHeader className='text-left'>
 						<DrawerTitle>{title}</DrawerTitle>
 						<DrawerDescription>{_description}</DrawerDescription>

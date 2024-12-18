@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
 import { useAuth } from '@/contexts/AuthProvider'
-import { makeImageUrlFromPath } from '@/lib/utils'
+import { makeResourcePublicUrlFromPath } from '@/lib/utils'
 
 export const UserAvatar = ({
 	user: { last_name, first_name, avatar_path, role },
@@ -72,7 +72,7 @@ export const UserAvatar = ({
 			<DropdownMenuTrigger asChild>
 				<Avatar className='cursor-pointer'>
 					<AvatarImage
-						src={makeImageUrlFromPath(avatar_path)}
+						src={makeResourcePublicUrlFromPath(avatar_path)}
 						alt='User avatar'
 					/>
 					<AvatarFallback>

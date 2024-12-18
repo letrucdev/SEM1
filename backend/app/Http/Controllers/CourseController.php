@@ -34,8 +34,12 @@ class CourseController extends Controller
                 });
 
             $coursesCount = $courses->count();
+            $coursesWithIndex = $courses->get()->map(function ($course, $index) use ($page, $pageSize) {
+                $course->order = $page * $pageSize + $index + 1;
+                return $course;
+            });
 
-            return response()->json(['message' => 'Courses retrieved successfully', 'total' => $coursesCount, 'data' => $courses->get()]);
+            return response()->json(['message' => 'Courses retrieved successfully', 'total' => $coursesCount, 'data' => $coursesWithIndex]);
         } catch (\Exception) {
             return response()->json(['error' => 'An error occurred while retrieving the courses'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -141,7 +145,12 @@ class CourseController extends Controller
     public function getLessons(Course $course)
     {
         try {
-            $courseLessons = $course->courseLessons()->get();
+            $courseLessons = $course->courseLessons()->get()->map(function ($lesson, $index) {
+                $lesson->duration_formatted = gmdate('H:i:s', $lesson->duration);
+                $lesson->order = $index + 1;
+
+                return $lesson;
+            });
 
             return response()->json([
                 'message' => 'Course lessons retrieved successfully',
@@ -149,6 +158,18 @@ class CourseController extends Controller
             ]);
         } catch (\Exception) {
             return response()->json(['error' => 'An error occurred while retrieving the course lessons'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getLessonDetail(Course $course, CourseLesson $courseLesson)
+    {
+        try {
+            return response()->json([
+                'message' => 'Course lesson retrieved successfully',
+                'data' => $courseLesson
+            ]);
+        } catch (\Exception) {
+            return response()->json(['error' => 'An error occurred while retrieving the course lesson'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 

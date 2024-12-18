@@ -26,7 +26,7 @@ export const formatDateTime = (dateString, time = false) => {
 	}
 }
 
-export const makeImageUrlFromPath = (path) => {
+export const makeResourcePublicUrlFromPath = (path) => {
 	return path ? `${config.rootApiDomain}/storage/${path}` : ''
 }
 
