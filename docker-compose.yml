@@ -13,6 +13,7 @@ services:
     volumes:
       - eproject-backend:/var/www/eproject-backend
       - eproject-backend-public:/var/www/eproject-backend/public
+      - ./php:/usr/local/etc/php
 
   eproject-frontend:
     build:
