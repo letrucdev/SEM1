@@ -13,7 +13,6 @@ services:
     volumes:
       - eproject-backend:/var/www/eproject-backend
       - eproject-backend-public:/var/www/eproject-backend/public
-      - ./php/php.ini:/usr/local/etc/php-fpm.conf
 
   eproject-frontend:
     build:
