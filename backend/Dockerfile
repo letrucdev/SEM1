@@ -1,13 +1,9 @@
-#FROM php:8.2-fpm
-FROM bitnami/php-fpm:latest
+FROM php:8.2-fpm
 
 ARG user
 ARG uid
 
 ENV APP_ENV=production
-ENV PHP_POST_MAX_SIZE=100MB
-ENV PHP_UPLOAD_MAX_FILESIZE=100MB
-ENV PHP_MEMORY_LIMIT=512MB
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -24,6 +20,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+ADD ./php/custom-php.ini /usr/local/etc/php/conf.d/custom-php.ini
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
