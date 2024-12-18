@@ -16,7 +16,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useGetCourseDetail } from '@/hooks/course/useGetCourseDetail'
-import { cn } from '@/lib/utils'
+import { cn, formatDuration, formatVideoDuration } from '@/lib/utils'
 import { PlayCircle } from 'lucide-react'
 import Link from 'next/link'
 import {
@@ -95,7 +95,8 @@ export default function CourseDetailLayout({
 												</CardTitle>
 												<CardDescription>
 													<span className='flex items-center gap-2'>
-														<PlayCircle size={16} /> {lesson.duration}
+														<PlayCircle size={16} />{' '}
+														{formatDuration(lesson.duration)}
 													</span>
 												</CardDescription>
 											</CardHeader>

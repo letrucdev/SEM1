@@ -4,6 +4,9 @@ ARG user
 ARG uid
 
 ENV APP_ENV=production
+ENV PHP_POST_MAX_SIZE=100MB
+ENV PHP_UPLOAD_MAX_FILESIZE=100MB
+ENV PHP_MEMORY_LIMIT=512MB
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \

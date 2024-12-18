@@ -34,7 +34,7 @@ export const NavCollapsible = ({ label, items }) => {
 				{items.map((item) => (
 					<SheetClose asChild key={item.title}>
 						<Button asChild variant='ghost' className='justify-start'>
-							<Link href={'#!'}>{item.title}</Link>
+							<Link href={item.href}>{item.title}</Link>
 						</Button>
 					</SheetClose>
 				))}
