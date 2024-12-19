@@ -11,7 +11,4 @@ enum PostType: string
     case ProfressionalDocument = 'pro_document';
 
     case Resource = 'resource';
-
-    case Video = 'video';
-
 }

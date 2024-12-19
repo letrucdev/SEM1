@@ -41,6 +41,7 @@ class PostController extends Controller
             $postCount = $postsQuery->count();
             $posts = $postsQuery->limit($pageSize)->offset($page * $pageSize)->get()->map(function ($post, $index) use ($page, $pageSize) {
                 $post->order = $page * $pageSize + $index + 1;
+                $post->test = "123";
                 return $post;
             });
 
