@@ -9,9 +9,9 @@ services:
     image: eproject-backend
     container_name: eproject-backend
     restart: unless-stopped
-    working_dir: /var/www/eproject-backend
+    working_dir: /var/www
     volumes:
-      - ./backend:/var/www/eproject-backend
+      - ./backend:/var/www
 
   eproject-frontend:
     build:
@@ -36,5 +36,8 @@ services:
     ports:
       - "8383:8383" # Cổng cho backend
     volumes:
-      - ./backend:/var/www/eproject-backend
+      - ./backend:/var/www
       - ./nginx:/etc/nginx/conf.d
+
+
+

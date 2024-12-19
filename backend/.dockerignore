@@ -1,6 +1,5 @@
 .idea
-vendor
 node_modules
 public/build/**/*
-nginx
+vendor
 .env
