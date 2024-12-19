@@ -11,8 +11,8 @@ services:
     restart: unless-stopped
     working_dir: /var/www/eproject-backend
     volumes:
-      - eproject-backend:/var/www/eproject-backend
-      - eproject-backend-public:/var/www/eproject-backend/public
+      - ./backend:/var/www/eproject-backend
+      - ./backend/public:/var/www/eproject-backend/public
 
   eproject-frontend:
     build:
@@ -37,9 +37,6 @@ services:
     ports:
       - "8383:8383" # Cổng cho backend
     volumes:
-      - eproject-backend:/var/www/eproject-backend
+      - ./backend:/var/www/eproject-backend
       - ./nginx:/etc/nginx/conf.d
 
-volumes:
-  eproject-backend:
-  eproject-backend-public:
