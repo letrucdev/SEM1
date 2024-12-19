@@ -19,6 +19,13 @@ export const ORDER_STATUS = {
 	Cancelled: 'Cancelled',
 }
 
+export const POST_TYPE = {
+	PatientEdu: 'patient_edu',
+	ResearchDocument: 'research_document',
+	ProfressionalDocument: 'pro_document',
+	Resource: 'resource',
+}
+
 /* React Query */
 export const QUERIES_STALE_TIME = minutesToMilliseconds(45)
 export const QUERIES_GC_TIME = minutesToMilliseconds(60)

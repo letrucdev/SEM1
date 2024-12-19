@@ -178,7 +178,7 @@ export default function HomePage() {
 			</div>
 
 			{/* Our dentist */}
-			<div className='bg-white pt-16 container mx-auto px-6'>
+			<div className='bg-white pt-16 container mx-auto px-6 pb-6'>
 				<div className='text-center mb-8'>
 					<h3 className='text-2xl md:text-4xl font-bold text-gray-800 mb-2'>
 						Our Dentist
@@ -205,7 +205,7 @@ export default function HomePage() {
 			</div>
 
 			{/* Latest Documents & Research Section */}
-			<div className='container mx-auto py-16 px-6'>
+			{/* <div className='container mx-auto py-16 px-6'>
 				<h3 className='text-4xl font-bold text-gray-800 mb-8'>
 					Read Latest Document & Research
 				</h3>
@@ -238,7 +238,7 @@ export default function HomePage() {
 						Read more
 					</a>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	)
 }

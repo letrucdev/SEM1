@@ -33,6 +33,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 
 import { SwiperNavButtons } from '@/components/swiper/SwiperNavButtons'
+import Link from 'next/link'
 
 export default function ProductDetailPage({ params: { id } }) {
 	const [quantity, setQuantity] = useState(1)
@@ -79,11 +80,15 @@ export default function ProductDetailPage({ params: { id } }) {
 					<Breadcrumb>
 						<BreadcrumbList>
 							<BreadcrumbItem>
-								<BreadcrumbLink href='/'>Home</BreadcrumbLink>
+								<BreadcrumbLink asChild>
+									<Link href='/'>Home</Link>
+								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbLink href='/products'>Products</BreadcrumbLink>
+								<BreadcrumbLink asChild>
+									<Link href='/products'>Products</Link>
+								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
@@ -124,7 +129,9 @@ export default function ProductDetailPage({ params: { id } }) {
 																alt={product.name}
 																width={512}
 																height={512}
-																src={makeResourcePublicUrlFromPath(image.image_path)}
+																src={makeResourcePublicUrlFromPath(
+																	image.image_path
+																)}
 															/>
 														</div>
 													</SwiperSlide>
@@ -157,7 +164,9 @@ export default function ProductDetailPage({ params: { id } }) {
 																alt={product.name}
 																width={512}
 																height={512}
-																src={makeResourcePublicUrlFromPath(image.image_path)}
+																src={makeResourcePublicUrlFromPath(
+																	image.image_path
+																)}
 															/>
 														</div>
 													</SwiperSlide>

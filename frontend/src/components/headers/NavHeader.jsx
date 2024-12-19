@@ -28,29 +28,18 @@ import { NavCollapsible } from './NavCollapsible'
 const researchs = [
 	{
 		title: 'Documents',
-		href: '/posts/documents',
+		href: '/education/research-documents',
 		description: 'Includes in-depth research papers on dental issues',
 	},
 	{
-		title: 'Videos',
-		href: '/posts/videos',
-		description: 'Includes videos on dental care',
-	},
-	{
-		title: 'Latest research',
-		href: '/posts/lastest-research',
+		title: 'Resource',
+		href: '/education/resource',
 		description:
-			'Includes the latest dental research from leading dentists around the world',
+			'Comprehensive collection of dental resources including latest research findings, educational materials, and professional guidelines. Access cutting-edge information from leading dental experts worldwide to enhance your knowledge and practice.',
 	},
 ]
 
 const educations = [
-	{
-		title: 'Courses',
-		href: '/education/courses',
-		description:
-			'A collection of dental courses offered by our dental offices.',
-	},
 	{
 		title: 'For patient',
 		href: '/education/for-patient',
@@ -64,10 +53,10 @@ const educations = [
 			'Professional resources such as treatment guidelines, clinical manuals, or technical documents for use by dentists and oral healthcare specialists.',
 	},
 	{
-		title: 'Case studies',
-		href: '/education/case-studies',
+		title: 'Courses',
+		href: '/education/courses',
 		description:
-			' In-depth analyses of real-life dental cases, showcasing challenges, treatment approaches, and outcomes. These studies provide valuable insights into advanced dental procedures, innovative solutions, and best practices for professionals and patients alike.',
+			'A collection of dental courses offered by our dental offices.',
 	},
 ]
 

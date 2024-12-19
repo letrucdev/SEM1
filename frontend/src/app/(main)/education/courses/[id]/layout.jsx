@@ -39,7 +39,9 @@ export default function CourseDetailLayout({
 					<Breadcrumb>
 						<BreadcrumbList>
 							<BreadcrumbItem>
-								<BreadcrumbLink href='/'>Home</BreadcrumbLink>
+								<BreadcrumbLink asChild>
+									<Link href={'/'}>Home</Link>
+								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
@@ -47,8 +49,8 @@ export default function CourseDetailLayout({
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />
 							<BreadcrumbItem>
-								<BreadcrumbLink href='/education/courses'>
-									Courses
+								<BreadcrumbLink asChild>
+									<Link href='/education/courses'>Courses</Link>
 								</BreadcrumbLink>
 							</BreadcrumbItem>
 							<BreadcrumbSeparator />

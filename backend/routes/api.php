@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->missing(function (Request $request, Throwable
     require __DIR__ . '/course_routes.php';
     require __DIR__ . '/user_routes.php';
     require __DIR__ . '/doctor_routes.php';
+    require __DIR__ . '/post_routes.php';
     require __DIR__ . '/support_ticket_routes.php';
 });
 

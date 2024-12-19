@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { DEFAULT_PAGINATION } from '@/constants'
 import { useGetCourses } from '@/hooks/course/useGetCourses'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export default function CoursesPage() {
@@ -56,7 +57,9 @@ export default function CoursesPage() {
 				<Breadcrumb>
 					<BreadcrumbList>
 						<BreadcrumbItem>
-							<BreadcrumbLink href='/'>Home</BreadcrumbLink>
+							<BreadcrumbLink asChild>
+								<Link href={'/'}>Home</Link>
+							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>

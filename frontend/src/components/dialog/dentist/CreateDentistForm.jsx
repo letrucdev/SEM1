@@ -238,7 +238,7 @@ export const CreateDentistForm = forwardRef(({ onSuccess }, ref) => {
 					name='password_confirmation'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Confrim password</FormLabel>
+							<FormLabel>Confirm password</FormLabel>
 							<FormControl>
 								<Input type='password' {...field} value={field.value ?? ''} />
 							</FormControl>

@@ -29,6 +29,7 @@ import {
 	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import Link from 'next/link'
 
 export default function ProductsPage() {
 	const [pagination, setPagination] = React.useState(DEFAULT_PAGINATION)
@@ -102,7 +103,9 @@ export default function ProductsPage() {
 				<Breadcrumb>
 					<BreadcrumbList>
 						<BreadcrumbItem>
-							<BreadcrumbLink href='/'>Home</BreadcrumbLink>
+							<BreadcrumbLink asChild>
+								<Link href='/'>Home</Link>
+							</BreadcrumbLink>
 						</BreadcrumbItem>
 						<BreadcrumbSeparator />
 						<BreadcrumbItem>
