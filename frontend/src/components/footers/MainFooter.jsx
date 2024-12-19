@@ -43,24 +43,35 @@ export const MainFooter = () => {
 							</Link>
 						</li>
 						<li>
-							<a href='#' className='hover:underline'>
-								Professional education
-							</a>
+							<Link
+								href='/education/profressional-documents'
+								className='hover:underline'
+							>
+								Professional Documents
+							</Link>
 						</li>
 						<li>
-							<a href='#' className='hover:underline'>
-								Patient education
-							</a>
+							<Link href='/education/for-patient' className='hover:underline'>
+								Patient Education
+							</Link>
 						</li>
 						<li>
-							<a href='#' className='hover:underline'>
-								Gallery
-							</a>
+							<Link href='/education/courses' className='hover:underline'>
+								Courses
+							</Link>
 						</li>
 						<li>
-							<a href='#' className='hover:underline'>
-								Sitemap
-							</a>
+							<Link
+								href='/education/research-documents'
+								className='hover:underline'
+							>
+								Research Documents
+							</Link>
+						</li>
+						<li>
+							<Link href='/education/resource' className='hover:underline'>
+								Resources
+							</Link>
 						</li>
 					</ul>
 				</div>
@@ -116,7 +127,8 @@ export const MainFooter = () => {
 			</div>
 
 			<div className='border-t border-black mt-8 pt-4 text-center text-gray-400'>
-				© {new Date().getFullYear()} eProject SEM 1 / Group 2 / BELLEVILLE DENTAL.
+				© {new Date().getFullYear()} eProject SEM 1 / Group 2 / BELLEVILLE
+				DENTAL.
 			</div>
 		</footer>
 	)
