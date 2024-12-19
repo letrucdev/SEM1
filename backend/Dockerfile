@@ -65,7 +65,7 @@ ARG user
 ARG uid
 
 # Copy composer.lock and composer.json
-# COPY composer.lock composer.json /var/www/
+COPY composer.lock composer.json /var/www/
 
 ENV APP_ENV=production
 
@@ -96,8 +96,12 @@ RUN mkdir -p /home/$user/.composer && \
 
 WORKDIR /var/www
 
+RUN mkdir -p /var/www/vendor \
+    && chown -R $user:$user /var/www
+
 # Change current user to www
 USER $user
+
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
