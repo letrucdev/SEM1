@@ -35,7 +35,7 @@ RUN mkdir -p /home/$user/.composer && \
 WORKDIR /var/www/eproject-backend
 
 # Copy project files
-COPY . /var/www/eproject-backend
+COPY . .
 
 
 RUN composer install --optimize-autoloader --no-dev
