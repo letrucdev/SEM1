@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\DoctorController;
 
-Route::prefix('doctors')->middleware('ability:manage-user')->controller(DoctorController::class)->group(function () {
-    Route::get('/', 'index')->withoutMiddleware(['ability:manage-user', 'auth:sanctum']);
+Route::prefix('doctors')->middleware('can:create,App\Models\User')->controller(DoctorController::class)->group(function () {
+    Route::get('/', 'index')->withoutMiddleware(['auth:sanctum', 'can:create,App\Models\User']);
     Route::get('/{user}', 'show');
 
     Route::post('/', 'store');

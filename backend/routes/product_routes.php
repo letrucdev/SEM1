@@ -11,24 +11,22 @@ Route::prefix('products')->controller(ProductController::class)->group(function 
         Route::get('/{product}', 'show');
     });
 
-    Route::middleware('ability:manage-product')->prefix('category')->group(function () {
-        Route::post('/', 'storeProductCategory');
+    Route::prefix('category')->group(function () {
+        Route::post('/', 'storeProductCategory')->can('create', \App\Models\Product::class);
 
-        Route::put('/{productCategory}', 'updateProductCategory');
+        Route::put('/{productCategory}', 'updateProductCategory')->can('update', \App\Models\Product::class);
 
-        Route::delete('/{productCategory}', 'destroyProductCategory');
+        Route::delete('/{productCategory}', 'destroyProductCategory')->can('update', \App\Models\Product::class);
     });
 
 
     Route::post('/{product}/rate', 'rateProduct');
 
-    Route::middleware('ability:manage-product')->group(function () {
-        Route::post('/', 'store');
+    Route::post('/', 'store')->can('create', \App\Models\Product::class);
 
-        Route::post('/{product}', 'update');
+    Route::post('/{product}', 'update')->can('update', \App\Models\Product::class);;
 
-        Route::delete('/{product}', 'destroy');
+    Route::delete('/{product}', 'destroy')->can('delete', \App\Models\Product::class);;
 
-        Route::delete('/{product}/{imageId}', 'destroyProductImage');
-    });
+    Route::delete('/{product}/{imageId}', 'destroyProductImage')->can('delete', \App\Models\Product::class);
 });

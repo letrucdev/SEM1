@@ -7,7 +7,7 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::post('/me', 'updateMe');
     Route::put('/me/password', 'updatePassword');
 
-    Route::middleware('ability:manage-user')->group(function () {
+    Route::middleware('can:create,App\Models\User')->group(function () {
         Route::get('/', 'getUser');
         Route::get('/{user}', 'showUser');
         Route::post('/{user}', 'updateUser');

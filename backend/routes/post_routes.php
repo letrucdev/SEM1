@@ -8,9 +8,9 @@ Route::prefix('posts')->controller(PostController::class)->group(function () {
 
     Route::get('/{post}', 'show')->withoutMiddleware('auth:sanctum');
 
-    Route::post('/', 'store');
+    Route::post('/', 'store')->can('create', \App\Models\Post::class);
 
-    Route::post('/{post}', 'update');
+    Route::post('/{post}', 'update')->can('update', 'post');
 
-    Route::delete('/{post}', 'destroy');
+    Route::delete('/{post}', 'destroy')->can('update', 'post');
 });
