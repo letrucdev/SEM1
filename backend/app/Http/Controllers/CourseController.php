@@ -34,7 +34,7 @@ class CourseController extends Controller
                 });
 
             $coursesCount = $courses->count();
-            $coursesWithIndex = $courses->get()->map(function ($course, $index) use ($page, $pageSize) {
+            $coursesWithIndex = $courses->limit($pageSize)->offset($page * $pageSize)->get()->map(function ($course, $index) use ($page, $pageSize) {
                 $course->order = $page * $pageSize + $index + 1;
                 return $course;
             });
