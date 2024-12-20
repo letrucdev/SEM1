@@ -5,14 +5,27 @@ export default function HomePage() {
     <>
       <div className="flex flex-col min-h-screen bg-white">
         {/* Hero Section */}
-        <div className="relative flex flex-col items-center justify-center bg-white shadow-lg rounded-md overflow-hidden">
-          <Image
-            src="/Banner_home.png" // Replace with your actual image path
+        <div className="relative w-full h-[300px] md:h-[400px]">
+          <img
+            src="/Banner.png" // Replace with your actual image path
             alt="Banner Home"
             width={1200}
             height={600}
-            className="object-cover w-full h-[300px] md:h-[400px]"
+            className="object-cover w-full h-full"
           />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-transparent"></div>
+
+          {/* Content */}
+          <div className="absolute inset-0 flex flex-col justify-center pl-8 text-white">
+            <h1 className="text-3xl md:text-5xl font-bold md:w-1/4">
+              Exceptional dental care for all ages
+            </h1>
+            <p className="mt-2 text-sm md:text-lg md:w-1/2">
+              Exceptional dental care for all ages. Your great smile begins with
+              a great dentist.
+            </p>
+          </div>
         </div>
 
         {/* Welcome Section */}
