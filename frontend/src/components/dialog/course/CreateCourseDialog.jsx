@@ -21,7 +21,7 @@ export const CreateCourseDialog = memo(
 		return (
 			<ResponsiveDialog
 				ref={dialogRef}
-				title={'Create Dentist'}
+				title={'Create Course'}
 				triggerElement={
 					<Button
 						disabled={disabled}
