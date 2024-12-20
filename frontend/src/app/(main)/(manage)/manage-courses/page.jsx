@@ -13,7 +13,9 @@ import { useMemo, useState } from 'react'
 
 export default function ManageCoursesPage() {
 	const [pagination, setPagination] = useState(DEFAULT_PAGINATION)
-	const { courses, courseTotal, isPendingGetCourses } = useGetCourses()
+	const { courses, courseTotal, isPendingGetCourses } = useGetCourses({
+		...pagination,
+	})
 	const { user } = useAuth()
 
 	const columns = useMemo(
