@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -28,13 +31,25 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
+        RateLimiter::for('ticket', function (Request $request) {
+            return Limit::perHour(5)->by($request->user()?->id ?: $request->ip());
+        });
+
+        Route::bind('cart', function ($value) {
+            return Cart::whereId($value)->whereUserId(\Auth::id())->firstOrFail();
+        });
+
+        Route::bind('order', function ($value) {
+            return Order::whereId($value)->whereUserId(\Auth::id())->firstOrFail();
+        });
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            /*  Route::middleware('web')
+                ->group(base_path('routes/web.php')); */
         });
     }
 }
