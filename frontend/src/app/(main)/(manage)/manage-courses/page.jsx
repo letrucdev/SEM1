@@ -5,6 +5,7 @@ import { DeleteCourseDialog } from '@/components/dialog/course/DeleteCourseDialo
 import { UpdateCourseDialog } from '@/components/dialog/course/UpdateCourseDialog'
 import { DataTable } from '@/components/table/DataTable'
 import { DEFAULT_PAGINATION } from '@/constants'
+import { useAuth } from '@/contexts/AuthProvider'
 import { useGetCourses } from '@/hooks/course/useGetCourses'
 import { formatDateTime, makeResourcePublicUrlFromPath } from '@/lib/utils'
 import Image from 'next/image'
@@ -13,6 +14,7 @@ import { useMemo, useState } from 'react'
 export default function ManageCoursesPage() {
 	const [pagination, setPagination] = useState(DEFAULT_PAGINATION)
 	const { courses, courseTotal, isPendingGetCourses } = useGetCourses()
+	const { user } = useAuth()
 
 	const columns = useMemo(
 		() => [
@@ -72,17 +74,15 @@ export default function ManageCoursesPage() {
 					),
 					created_at: formatDateTime(course.created_at, true),
 					updated_at: formatDateTime(course.updated_at, true),
-					action: (
+					action: (user?.id === course.user_id || user?.role === 'Admin') && (
 						<span className='flex gap-2'>
-							{/* <UpdateProductDialog product={product} />
-							<DeleteProductDialog productId={product.id} /> */}
 							<UpdateCourseDialog course={course} />
 							<DeleteCourseDialog courseId={course.id} />
 						</span>
 					),
 				}
 			}),
-		[courses]
+		[courses, user?.id, user?.role]
 	)
 
 	const handleSetPage = (page) => {

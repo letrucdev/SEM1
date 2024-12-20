@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
 	BriefcaseMedical,
+	FileText,
 	GraduationCap,
 	Lock,
 	LogOut,
@@ -62,6 +63,28 @@ export const UserAvatar = ({
 					title: 'Manage Courses',
 					href: '/manage-courses',
 					icon: <GraduationCap />,
+				},
+				{
+					title: 'Manage Orders',
+					href: '/manage-orders',
+					icon: <Package />,
+				},
+				{
+					title: 'Manage Posts',
+					href: '/manage-posts',
+					icon: <FileText />,
+				},
+			],
+			Doctor: [
+				{
+					title: 'Manage Courses',
+					href: '/manage-courses',
+					icon: <GraduationCap />,
+				},
+				{
+					title: 'Manage Posts',
+					href: '/manage-posts',
+					icon: <FileText />,
 				},
 			],
 		},

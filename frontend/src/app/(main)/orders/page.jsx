@@ -87,7 +87,7 @@ export default function OrdersPage() {
 								<span className='flex gap-4 items-center'>
 									<Image
 										src={makeResourcePublicUrlFromPath(
-											product.product_images[0].image_path
+											product.product_images?.[0]?.image_path
 										)}
 										width={128}
 										height={128}

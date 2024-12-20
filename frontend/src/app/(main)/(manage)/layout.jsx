@@ -9,19 +9,33 @@ export default function ManageLayout({ children }) {
 	const segment = useSelectedLayoutSegment()
 	const router = useRouter()
 
-	const manageRoutes = [
-		{ key: 'manage-users', tabLabel: 'Users', href: '/manage-users' },
-		{ key: 'manage-dentists', tabLabel: 'Dentists', href: '/manage-dentists' },
-		{ key: 'manage-products', tabLabel: 'Products', href: '/manage-products' },
-		{ key: 'manage-orders', tabLabel: 'Orders', href: '/manage-orders' },
-		{ key: 'manage-courses', tabLabel: 'Courses', href: '/manage-courses' },
-		{ key: 'manage-posts', tabLabel: 'Posts', href: '/manage-posts' },
-		{
-			key: 'manage-tickets',
-			tabLabel: 'Questions & Comments',
-			href: '/manage-tickets',
-		},
-	]
+	const manageRoutes = {
+		Admin: [
+			{ key: 'manage-users', tabLabel: 'Users', href: '/manage-users' },
+			{
+				key: 'manage-dentists',
+				tabLabel: 'Dentists',
+				href: '/manage-dentists',
+			},
+			{
+				key: 'manage-products',
+				tabLabel: 'Products',
+				href: '/manage-products',
+			},
+			{ key: 'manage-orders', tabLabel: 'Orders', href: '/manage-orders' },
+			{ key: 'manage-courses', tabLabel: 'Courses', href: '/manage-courses' },
+			{ key: 'manage-posts', tabLabel: 'Posts', href: '/manage-posts' },
+			{
+				key: 'manage-tickets',
+				tabLabel: 'Questions & Comments',
+				href: '/manage-tickets',
+			},
+		],
+		Doctor: [
+			{ key: 'manage-courses', tabLabel: 'Courses', href: '/manage-courses' },
+			{ key: 'manage-posts', tabLabel: 'Posts', href: '/manage-posts' },
+		],
+	}
 
 	const handleRoute = useCallback(
 		(href) => () => router.push(href, { scroll: false }),
@@ -43,7 +57,7 @@ export default function ManageLayout({ children }) {
 		[handleRoute]
 	)
 
-	if (user?.role !== 'Admin') {
+	if (!manageRoutes[user?.role]) {
 		location.href = '/'
 		return
 	}
@@ -58,7 +72,7 @@ export default function ManageLayout({ children }) {
 				</div>
 				<Tabs value={segment} className='w-full'>
 					<TabsList className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 justify-start h-fit gap-2'>
-						{renderTabsList(manageRoutes)}
+						{renderTabsList(manageRoutes[user?.role])}
 					</TabsList>
 				</Tabs>
 			</div>

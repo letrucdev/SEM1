@@ -13,6 +13,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { DEFAULT_PAGINATION, POST_TYPE } from '@/constants'
+import { useAuth } from '@/contexts/AuthProvider'
 import { useGetPosts } from '@/hooks/post/useGetPosts'
 import { formatDateTime } from '@/lib/utils'
 import { useEffect, useMemo, useState } from 'react'
@@ -31,6 +32,8 @@ export default function ManagePostsPage() {
 		...pagination,
 		...filters,
 	})
+
+	const { user } = useAuth()
 
 	const columns = useMemo(
 		() => [
@@ -80,7 +83,7 @@ export default function ManagePostsPage() {
 					...post,
 					created_at: formatDateTime(post.created_at, true),
 					updated_at: formatDateTime(post.updated_at, true),
-					action: (
+					action: (user?.id === post.user_id || user?.role === 'Admin') && (
 						<span className='flex gap-2'>
 							<UpdatePostDialog post={post} />
 							<DeletePostDialog postId={post.id} />
@@ -90,7 +93,7 @@ export default function ManagePostsPage() {
 					),
 				}
 			}),
-		[posts]
+		[posts, user?.id, user?.role]
 	)
 
 	const handleSetPage = (page) => {
